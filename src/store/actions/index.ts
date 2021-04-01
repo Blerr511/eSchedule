@@ -1,0 +1,8 @@
+import * as auth from './auth';
+
+const actions = {
+	auth
+};
+
+export default actions;
+export * from './auth';

@@ -1,9 +1,11 @@
+import auth from '@react-native-firebase/auth';
+
 export interface LoginPayload {
-	username: string;
+	email: string;
 	password: string;
 }
-export const Login = ({username, password}: LoginPayload) =>
-	new Promise(res => {
-		console.log({username, password});
-		setTimeout(res, 1000, {username: 'Test', name: 'test', surname: 'test', type: 'lec'});
-	});
+
+export const Login = ({email, password}: LoginPayload) =>
+	auth()
+		.signInWithEmailAndPassword(email, password)
+		.then(data => ({user: {email: data.user.email, name: data.user.displayName, uid: data.user.uid}}));

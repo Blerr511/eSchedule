@@ -1,51 +1,31 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React from 'react';
-import {SafeAreaView, StatusBar, Text, useColorScheme, TextInput} from 'react-native';
-
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {Text, TouchableOpacity} from 'react-native';
+import {Provider, useDispatch} from 'react-redux';
+import actions from 'store/actions';
+import store from 'store';
 
 const App = () => {
-	const isDarkMode = useColorScheme() === 'dark';
-
-	const backgroundStyle = {
-		backgroundColor: isDarkMode ? Colors.darker : Colors.lighter
+	const dispatch = useDispatch();
+	const handlePress = () => {
+		console.log('press');
+		dispatch(actions.auth.signIn({email: 'test@test.test', password: 'testtest'}));
 	};
 
 	return (
-		<SafeAreaView style={backgroundStyle}>
-			<StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-			<Text>test</Text>
-			<TextInput />
-		</SafeAreaView>
+		<TouchableOpacity
+			activeOpacity={0.5}
+			onPress={handlePress}
+			style={{backgroundColor: 'red', padding: 50, zIndex: 22}}
+			hitSlop={{top: 30, bottom: 30, left: 30, right: 30}}>
+			<Text>Click Me!</Text>
+		</TouchableOpacity>
 	);
 };
 
-// const styles = StyleSheet.create({
-//   sectionContainer: {
-//     marginTop: 32,
-//     paddingHorizontal: 24,
-//   },
-//   sectionTitle: {
-//     fontSize: 24,
-//     fontWeight: '600',
-//   },
-//   sectionDescription: {
-//     marginTop: 8,
-//     fontSize: 18,
-//     fontWeight: '400',
-//   },
-//   highlight: {
-//     fontWeight: '700',
-//   },
-// });
+const AppProvider = () => (
+	<Provider store={store}>
+		<App />
+	</Provider>
+);
 
-export default App;
+export default AppProvider;

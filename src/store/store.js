@@ -1,4 +1,6 @@
-import {configureStore} from '@reduxjs/toolkit';
-import React from 'react';
+import {combineReducers, configureStore} from '@reduxjs/toolkit';
+import slices from './slices';
 
-const store = configureStore({});
+const store = configureStore({reducer: combineReducers({auth: slices.auth.reducer})});
+
+export default store;
