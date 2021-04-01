@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "156415780622",
+    "project_id": "eshedule",
+    "storage_bucket": "eshedule.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156415780622:android:96972805f3aecbc2c9595f",
+        "android_client_info": {
+          "package_name": "com.eschedule"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156415780622-8408k620bbiadgqomsf4s77ncm9pqhrd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB26_y4oStXFrW_Y1deVGlAtpMrB6ksP1k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156415780622-8408k620bbiadgqomsf4s77ncm9pqhrd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
