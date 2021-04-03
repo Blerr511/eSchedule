@@ -1,1 +1,3 @@
-export * as themes from './themes';
+import * as themes from './themes';
+
+export {themes};
