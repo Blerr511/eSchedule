@@ -1,11 +1,15 @@
 import {createContext, Dispatch, SetStateAction} from 'react';
-import {ITheme} from './interfaces';
+import {ITheme, IThemeGetter} from './interfaces';
 
-export const defaultTheme: ITheme = {
+export const defaultTheme: ITheme & IThemeGetter = {
 	pallet: {
 		background: {
-			white: '#ffffff',
-			black: '#000000'
+			primary: '#ffffff',
+			secondary: '#000000'
+		},
+		border: {
+			primary: '#ffffff',
+			secondary: '#000000'
 		}
 	},
 	typography: {
@@ -16,6 +20,10 @@ export const defaultTheme: ITheme = {
 		fontSize: {
 			medium: 12
 		}
+	},
+	space: 8,
+	spacing(space) {
+		return this.space * space;
 	}
 };
 

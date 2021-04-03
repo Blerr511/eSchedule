@@ -5,14 +5,21 @@ export interface IThemeTypography {
 
 export interface IThemePallet {
 	background: Record<string, string>;
+	border: Record<string, string>;
 }
 
 export interface ITheme {
 	typography: IThemeTypography;
 	pallet: IThemePallet;
+	space: number;
+}
+
+export interface IThemeGetter {
+	spacing: (space: number) => number;
 }
 
 export interface CreateThemeProps {
 	typography?: Partial<IThemeTypography>;
 	pallet?: Partial<IThemePallet>;
+	space?: number;
 }
