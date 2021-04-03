@@ -1,6 +1,10 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import services from 'services';
-
-export const signIn = createAsyncThunk('signIn', ({email, password}: {email: string; password: string}) =>
-	services.Auth.Login({email, password})
+type SignInCredentials = {email: string; password: string};
+export const signIn = createAsyncThunk<
+	any,
+	SignInCredentials,
+	{rejectValue: {message: string; code: 'wrong-password' | 'invalid-email'}}
+>('signIn', ({email, password}, {rejectWithValue}) =>
+	services.Auth.Login({email, password}).catch(err => rejectWithValue(err?.userInfo))
 );

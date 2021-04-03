@@ -2,7 +2,7 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useSelector} from 'react-redux';
-import {loggedIn} from 'store/selectors/auth';
+import {auth} from 'store/selectors';
 
 import HomeScreen from './HomeScreen';
 import {SignIn, SignUp} from './SignScreen';
@@ -13,7 +13,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 export interface MainViewProps {}
 
 const MainView: React.FC<MainViewProps> = () => {
-	const isLoggedIn = useSelector(loggedIn);
+	const isLoggedIn = useSelector(auth.loggedIn);
 
 	return (
 		<NavigationContainer>
