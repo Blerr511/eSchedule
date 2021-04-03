@@ -48,6 +48,20 @@ const useStyles = createStyleSheet(theme => ({
 	forgotPassword: {
 		color: theme.pallet.primary,
 		textAlign: 'right'
+	},
+	text: {
+		fontSize: theme.typography.fontSize.small,
+		color: theme.typography.color.primary
+	},
+	link: {
+		fontSize: theme.typography.fontSize.small,
+		color: theme.pallet.primary
+	},
+	signUpContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		marginVertical: theme.spacing(2)
 	}
 }));
 
@@ -55,16 +69,13 @@ export interface SignInProps {
 	navigation: StackNavigationProp<RootStackParamList, 'SignIn'>;
 }
 
-const SignIn: React.FC<SignInProps> = () => {
+const SignIn = ({navigation}: SignInProps) => {
 	const dispatch = useDispatch();
 
 	const styles = useStyles();
 	const theme = useTheme();
 
 	const {
-		user,
-		loggedIn,
-		error,
 		loading,
 		meta: {email: emailError, password: passwordError}
 	} = useSelector((state: RootState) => state.auth);
@@ -81,7 +92,11 @@ const SignIn: React.FC<SignInProps> = () => {
 	const handleSubmit = useCallback(() => {
 		if (email && password) dispatch(actions.auth.signIn({email, password}));
 	}, [dispatch, email, password]);
-	console.log({user, loggedIn, error, loading});
+
+	const handleSignUp = useCallback(() => {
+		navigation.navigate('SignUp');
+	}, [navigation]);
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.headerContainer}>
@@ -134,6 +149,12 @@ const SignIn: React.FC<SignInProps> = () => {
 				<Text style={styles.forgotPassword}>Forgot Password?</Text>
 			</View>
 			<Button text="Sign In" disabled={loading} onPress={handleSubmit} activeOpacity={0.8} />
+			<View style={styles.signUpContainer}>
+				<Text style={styles.text}>{"Don't have account?"}</Text>
+				<Pressable hitSlop={{bottom: 10, top: 10, left: 20, right: 20}} onPress={handleSignUp}>
+					<Text style={[styles.link, {paddingLeft: 5}]}>create a new account</Text>
+				</Pressable>
+			</View>
 		</View>
 	);
 };
