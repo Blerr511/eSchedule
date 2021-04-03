@@ -3,7 +3,9 @@ import {createTheme} from 'hooks/useTheme/ThemeProvider';
 export const light = createTheme({
 	pallet: {
 		background: {
-			primary: '#ffffff'
+			primary: '#ffffff',
+			secondary: '#000000',
+			tertiary: 'gray'
 		}
 	},
 	typography: {

@@ -5,17 +5,20 @@ export const defaultTheme: ITheme & IThemeGetter & IThemeSetter = {
 	pallet: {
 		background: {
 			primary: '#ffffff',
-			secondary: '#000000'
+			secondary: '#000000',
+			tertiary: 'gray'
 		},
 		border: {
 			primary: '#ffffff',
-			secondary: '#000000'
+			secondary: '#000000',
+			tertiary: 'gray'
 		}
 	},
 	typography: {
 		color: {
 			primary: '#000000',
-			secondary: 'gray'
+			secondary: '#ffffff',
+			tertiary: 'gray'
 		},
 		fontSize: {
 			extraSmall: 8,

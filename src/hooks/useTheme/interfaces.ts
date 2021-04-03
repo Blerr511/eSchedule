@@ -1,17 +1,19 @@
 export type fontSizeNamings = 'extraSmall' | 'small' | 'medium' | 'large' | 'extraLarge';
 
-type PartialRecord<K extends keyof any, T> = {
-	[P in K]?: T;
+type DeepPartial<T> = {
+	[P in keyof T]?: DeepPartial<T[P]>;
 };
 
+export type IThemeColorScheme = Record<'primary' | 'secondary' | 'tertiary', string>;
+
 export interface IThemeTypography {
-	color: Record<string, string>;
+	color: IThemeColorScheme;
 	fontSize: Record<fontSizeNamings, number>;
 }
 
 export interface IThemePallet {
-	background: Record<string, string>;
-	border: Record<string, string>;
+	background: IThemeColorScheme;
+	border: IThemeColorScheme;
 }
 
 export interface ITheme {
@@ -27,8 +29,4 @@ export interface IThemeGetter {
 	spacing: (space: number) => number;
 }
 
-export interface CreateThemeProps {
-	typography?: Partial<IThemeTypography> & {fontSize?: PartialRecord<fontSizeNamings, number>};
-	pallet?: Partial<IThemePallet>;
-	space?: number;
-}
+export type CreateThemeProps = DeepPartial<ITheme & IThemeSetter>;
