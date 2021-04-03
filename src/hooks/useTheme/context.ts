@@ -12,7 +12,10 @@ export const defaultTheme: ITheme & IThemeGetter & IThemeSetter = {
 			primary: '#ffffff',
 			secondary: '#000000',
 			tertiary: 'gray'
-		}
+		},
+		primary: 'blue',
+		secondary: 'red',
+		tertiary: 'green'
 	},
 	typography: {
 		color: {

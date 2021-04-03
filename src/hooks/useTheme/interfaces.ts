@@ -11,7 +11,7 @@ export interface IThemeTypography {
 	fontSize: Record<fontSizeNamings, number>;
 }
 
-export interface IThemePallet {
+export interface IThemePallet extends IThemeColorScheme {
 	background: IThemeColorScheme;
 	border: IThemeColorScheme;
 }
