@@ -1,7 +1,7 @@
 import {createContext, Dispatch, SetStateAction} from 'react';
-import {ITheme, IThemeGetter} from './interfaces';
+import {ITheme, IThemeGetter, IThemeSetter} from './interfaces';
 
-export const defaultTheme: ITheme & IThemeGetter = {
+export const defaultTheme: ITheme & IThemeGetter & IThemeSetter = {
 	pallet: {
 		background: {
 			primary: '#ffffff',
@@ -28,7 +28,7 @@ export const defaultTheme: ITheme & IThemeGetter = {
 };
 
 const themeContext = createContext<{
-	theme: ITheme;
+	theme: ITheme & IThemeGetter & IThemeSetter;
 	currentTheme?: string | number;
 	setCurrentTheme?: Dispatch<SetStateAction<string | number>>;
 }>({

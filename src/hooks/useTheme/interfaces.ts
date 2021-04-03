@@ -11,6 +11,9 @@ export interface IThemePallet {
 export interface ITheme {
 	typography: IThemeTypography;
 	pallet: IThemePallet;
+}
+
+export interface IThemeSetter {
 	space: number;
 }
 

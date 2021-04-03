@@ -1,11 +1,11 @@
 import {useContext, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import themeContext from './context';
-import {ITheme} from './interfaces';
+import {ITheme, IThemeGetter} from './interfaces';
 
 type NamedStyles<T = any> = StyleSheet.NamedStyles<T>;
 // eslint-disable-next-line no-unused-vars
-type NamedStylesReturn<T = any> = (theme: ITheme) => NamedStyles<T>;
+type NamedStylesReturn<T = any> = (theme: ITheme & IThemeGetter) => NamedStyles<T>;
 
 export const createStyleSheet = <T>(
 	styles: NamedStyles<T> | NamedStylesReturn<T>
