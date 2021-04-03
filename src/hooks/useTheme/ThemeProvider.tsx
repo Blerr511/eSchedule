@@ -3,7 +3,7 @@ import merge from 'ts-deepmerge';
 import {ITheme, CreateThemeProps, IThemeGetter, IThemeSetter} from './interfaces';
 import themeContext, {defaultTheme} from './context';
 
-export const createTheme = (theme: CreateThemeProps): ITheme => merge(defaultTheme, theme);
+export const createTheme = (theme: CreateThemeProps) => merge(defaultTheme, theme);
 
 const defaultThemeList = {default: defaultTheme};
 
