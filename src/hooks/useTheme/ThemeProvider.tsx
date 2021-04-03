@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import merge from 'ts-deepmerge';
-import {ITheme, CreateThemeProps} from './interfaces';
+import {ITheme, CreateThemeProps, IThemeGetter, IThemeSetter} from './interfaces';
 import themeContext, {defaultTheme} from './context';
 
 export const createTheme = (theme: CreateThemeProps): ITheme => merge(defaultTheme, theme);
@@ -8,7 +8,7 @@ export const createTheme = (theme: CreateThemeProps): ITheme => merge(defaultThe
 const defaultThemeList = {default: defaultTheme};
 
 type ThemeList = {
-	[key: string]: ITheme;
+	[key: string]: ITheme & IThemeGetter & IThemeSetter;
 };
 
 export interface ThemeProviderProps {
