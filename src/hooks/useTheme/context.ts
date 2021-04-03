@@ -31,6 +31,7 @@ export const defaultTheme: ITheme & IThemeGetter & IThemeSetter = {
 			extraLarge: 24
 		}
 	},
+	shape: {borderRadius: 5},
 	space: 8,
 	spacing(space) {
 		return this.space * space;

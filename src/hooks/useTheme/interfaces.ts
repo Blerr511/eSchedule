@@ -16,9 +16,14 @@ export interface IThemePallet extends IThemeColorScheme {
 	border: IThemeColorScheme;
 }
 
+export interface IShape {
+	borderRadius: number;
+}
+
 export interface ITheme {
 	typography: IThemeTypography;
 	pallet: IThemePallet;
+	shape: IShape;
 }
 
 export interface IThemeSetter {
