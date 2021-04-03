@@ -18,7 +18,11 @@ export const defaultTheme: ITheme & IThemeGetter & IThemeSetter = {
 			secondary: 'gray'
 		},
 		fontSize: {
-			medium: 12
+			extraSmall: 8,
+			small: 12,
+			medium: 16,
+			large: 20,
+			extraLarge: 24
 		}
 	},
 	space: 8,

@@ -1,6 +1,12 @@
+export type fontSizeNamings = 'extraSmall' | 'small' | 'medium' | 'large' | 'extraLarge';
+
+type PartialRecord<K extends keyof any, T> = {
+	[P in K]?: T;
+};
+
 export interface IThemeTypography {
 	color: Record<string, string>;
-	fontSize: Record<string, number>;
+	fontSize: Record<fontSizeNamings, number>;
 }
 
 export interface IThemePallet {
@@ -22,7 +28,7 @@ export interface IThemeGetter {
 }
 
 export interface CreateThemeProps {
-	typography?: Partial<IThemeTypography>;
+	typography?: Partial<IThemeTypography> & {fontSize?: PartialRecord<fontSizeNamings, number>};
 	pallet?: Partial<IThemePallet>;
 	space?: number;
 }
