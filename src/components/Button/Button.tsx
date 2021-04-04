@@ -1,5 +1,5 @@
 import {createStyleSheet} from 'hooks/useTheme';
-import React, {ReactNode, useMemo} from 'react';
+import React, {ReactNode} from 'react';
 import {
 	StyleProp,
 	Text,
@@ -39,7 +39,7 @@ export interface ButtonProps extends TouchableOpacityProps {
 	text?: string;
 	textStyles?: StyleProp<TextStyle>;
 	children?: ReactNode;
-	containerStyles: StyleProp<ViewStyle>;
+	containerStyles?: StyleProp<ViewStyle>;
 	type?: 'filled' | 'text' | 'bordered';
 }
 
