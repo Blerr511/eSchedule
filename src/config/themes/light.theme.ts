@@ -16,5 +16,6 @@ export const light = createTheme({
 			primary: '#000000',
 			secondary: '#ffffff'
 		}
-	}
+	},
+	isDark: false
 });

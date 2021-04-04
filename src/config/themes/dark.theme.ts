@@ -15,5 +15,6 @@ export const dark = createTheme({
 			secondary: '#000000',
 			tertiary: '#BBBCB6'
 		}
-	}
+	},
+	isDark: true
 });

@@ -24,6 +24,7 @@ export interface ITheme {
 	typography: IThemeTypography;
 	pallet: IThemePallet;
 	shape: IShape;
+	isDark: boolean;
 }
 
 export interface IThemeSetter {

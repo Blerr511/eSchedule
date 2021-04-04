@@ -35,7 +35,8 @@ export const defaultTheme: ITheme & IThemeGetter & IThemeSetter = {
 	space: 8,
 	spacing(space) {
 		return this.space * space;
-	}
+	},
+	isDark: false
 };
 
 const themeContext = createContext<{
