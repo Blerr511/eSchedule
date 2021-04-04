@@ -1,9 +1,9 @@
 import {StackNavigationProp} from '@react-navigation/stack';
 import Button from 'components/Button/Button';
 import TextField from 'components/TextField';
-import {createStyleSheet, useTheme} from 'hooks/useTheme';
+import {useTheme} from 'hooks/useTheme';
 import React, {useCallback, useRef, useState} from 'react';
-import {ActivityIndicator, Pressable, Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 import {RootStackParamList} from 'Views';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Input} from 'react-native-elements';
@@ -11,59 +11,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import actions from 'store/actions';
 import {useControlledInput} from 'hooks';
 import {RootState} from 'store/store';
-
-const useStyles = createStyleSheet(theme => ({
-	container: {
-		flex: 1,
-		display: 'flex',
-		position: 'relative',
-		paddingHorizontal: theme.spacing(2),
-		paddingVertical: theme.spacing(4),
-		backgroundColor: theme.pallet.background.primary,
-		minHeight: 450
-	},
-	headerContainer: {
-		paddingBottom: theme.spacing(4)
-	},
-	subTitle: {
-		fontSize: theme.typography.fontSize.small,
-		color: theme.typography.color.tertiary
-	},
-	title: {
-		fontSize: theme.typography.fontSize.extraLarge,
-		color: theme.typography.color.primary,
-		fontWeight: 'bold'
-	},
-	input: {
-		color: theme.pallet.primary
-	},
-	removePadding: {
-		paddingHorizontal: 0
-	},
-	togglePasswordVisibility: {
-		position: 'relative',
-		right: 10
-	},
-	formContainer: {flex: 1, display: 'flex', justifyContent: 'center'},
-	forgotPassword: {
-		color: theme.pallet.primary,
-		textAlign: 'right'
-	},
-	text: {
-		fontSize: theme.typography.fontSize.small,
-		color: theme.typography.color.primary
-	},
-	link: {
-		fontSize: theme.typography.fontSize.small,
-		color: theme.pallet.primary
-	},
-	signUpContainer: {
-		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'center',
-		marginVertical: theme.spacing(2)
-	}
-}));
+import useSignScreenStyles from '../styles';
+import authSlice from 'store/slices/auth';
 
 export interface SignInProps {
 	navigation: StackNavigationProp<RootStackParamList, 'SignIn'>;
@@ -72,7 +21,7 @@ export interface SignInProps {
 const SignIn = ({navigation}: SignInProps) => {
 	const dispatch = useDispatch();
 
-	const styles = useStyles();
+	const styles = useSignScreenStyles();
 	const theme = useTheme();
 
 	const {
@@ -95,7 +44,10 @@ const SignIn = ({navigation}: SignInProps) => {
 
 	const handleSignUp = useCallback(() => {
 		navigation.navigate('SignUp');
-	}, [navigation]);
+		dispatch(authSlice.actions.clearErrors());
+	}, [dispatch, navigation]);
+
+	const disableSignIn = loading || !email || !password;
 
 	return (
 		<View style={styles.container}>
@@ -106,8 +58,9 @@ const SignIn = ({navigation}: SignInProps) => {
 			<View style={[styles.formContainer, {opacity: loading ? 0.5 : 1}]}>
 				<View>
 					<TextField
+						placeholder="email@address.com"
 						label="Email"
-						leftIcon={<Icon name="user" size={24} color={theme.pallet.primary} />}
+						leftIcon={<Icon name="envelope" size={24} color={theme.pallet.primary} />}
 						containerStyle={styles.removePadding}
 						inputStyle={styles.input}
 						textContentType="emailAddress"
@@ -122,6 +75,7 @@ const SignIn = ({navigation}: SignInProps) => {
 				</View>
 				<View>
 					<TextField
+						placeholder="********"
 						label="Password"
 						textContentType="password"
 						leftIcon={<Icon name="lock" size={24} color={theme.pallet.primary} />}
@@ -148,7 +102,7 @@ const SignIn = ({navigation}: SignInProps) => {
 				</View>
 				<Text style={styles.forgotPassword}>Forgot Password?</Text>
 			</View>
-			<Button text="Sign In" disabled={loading} onPress={handleSubmit} activeOpacity={0.8} />
+			<Button text="Sign In" disabled={disableSignIn} onPress={handleSubmit} activeOpacity={0.8} />
 			<View style={styles.signUpContainer}>
 				<Text style={styles.text}>{"Don't have account?"}</Text>
 				<Pressable hitSlop={{bottom: 10, top: 10, left: 20, right: 20}} onPress={handleSignUp}>
