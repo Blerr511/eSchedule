@@ -1,6 +1,14 @@
 import {createStyleSheet} from 'hooks/useTheme';
 import React, {ReactNode, useMemo} from 'react';
-import {StyleProp, Text, TextStyle, TouchableOpacity, TouchableOpacityProps} from 'react-native';
+import {
+	StyleProp,
+	Text,
+	TextStyle,
+	TouchableOpacity,
+	TouchableOpacityProps,
+	View,
+	ViewStyle
+} from 'react-native';
 
 const useStyles = createStyleSheet(theme => ({
 	container: {
@@ -23,28 +31,41 @@ const useStyles = createStyleSheet(theme => ({
 		color: theme.pallet.primary,
 		fontSize: theme.typography.fontSize.medium,
 		textAlign: 'center'
-	}
+	},
+	disabled: {opacity: 0.6}
 }));
 
 export interface ButtonProps extends TouchableOpacityProps {
 	text?: string;
 	textStyles?: StyleProp<TextStyle>;
 	children?: ReactNode;
+	containerStyles: StyleProp<ViewStyle>;
 	type?: 'filled' | 'text' | 'bordered';
 }
 
-const Button = ({text, style, textStyles, type = 'filled', children, ...props}: ButtonProps) => {
+const Button = ({
+	text,
+	style,
+	textStyles,
+	containerStyles,
+	type = 'filled',
+	children,
+	disabled,
+	...props
+}: ButtonProps) => {
 	const styles = useStyles();
 	const filled = type === 'filled';
 	const bordered = type === 'bordered';
-
 	return (
-		<TouchableOpacity
-			style={[styles.container, filled && styles.filled, bordered && styles.bordered, style]}
-			{...props}>
-			<Text style={[styles.text, filled && styles.filledText, textStyles]}>{text}</Text>
-			{children}
-		</TouchableOpacity>
+		<View style={[disabled && styles.disabled, containerStyles]}>
+			<TouchableOpacity
+				style={[styles.container, filled && styles.filled, bordered && styles.bordered, style]}
+				disabled={disabled}
+				{...props}>
+				<Text style={[styles.text, filled && styles.filledText, textStyles]}>{text}</Text>
+				{children}
+			</TouchableOpacity>
+		</View>
 	);
 };
 
