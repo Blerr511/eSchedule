@@ -4,6 +4,10 @@ export interface VerifyEmailPayload {
 	email: string;
 }
 
+export interface RemindPasswordPayload {
+	email: string;
+}
+
 export interface LoginPayload {
 	email: string;
 	password: string;
@@ -20,3 +24,6 @@ export const Login = ({email, password}: LoginPayload) =>
 
 export const SignUp = async ({email}: VerifyEmailPayload) =>
 	auth().sendSignInLinkToEmail(email, {url: 'http://localhost', handleCodeInApp: true});
+
+export const remindPassword = ({email}: RemindPasswordPayload) =>
+	auth().sendPasswordResetEmail(email, {handleCodeInApp: true, url: 'http://localhost:8080'});

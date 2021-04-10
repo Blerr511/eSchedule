@@ -1,7 +1,7 @@
 import {StackNavigationProp} from '@react-navigation/stack';
 import Button from 'components/Button/Button';
 import TextField from 'components/TextField';
-import {useTheme} from 'hooks/useTheme';
+import {createStyleSheet, useTheme} from 'hooks/useTheme';
 import React, {useCallback, useRef, useState} from 'react';
 import {Pressable, Text, View} from 'react-native';
 import {RootStackParamList} from 'Views';
@@ -13,6 +13,35 @@ import {useControlledInput} from 'hooks';
 import {RootState} from 'store/store';
 import useSignScreenStyles from '../styles';
 import authSlice from 'store/slices/auth';
+import ReactNativeModal from 'react-native-modal';
+
+const useModalStyles = createStyleSheet(theme => ({
+	container: {backgroundColor: theme.pallet.background.tertiary, padding: theme.spacing(3)},
+	text: {
+		color: theme.typography.color.tertiary,
+		fontSize: theme.typography.fontSize.medium
+	},
+	buttonsContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		paddingTop: theme.spacing(3),
+		paddingHorizontal: theme.spacing(2)
+	},
+	okBtn: {
+		paddingVertical: theme.spacing(0.5),
+		paddingHorizontal: theme.spacing(2)
+	},
+	title: {
+		color: theme.typography.color.primary,
+		fontSize: theme.typography.fontSize.large,
+		fontWeight: 'bold',
+		marginBottom: theme.spacing(1)
+	},
+	textField: {
+		marginTop: theme.spacing(1)
+	}
+}));
 
 export interface SignInProps {
 	navigation: StackNavigationProp<RootStackParamList, 'SignIn'>;
@@ -23,16 +52,29 @@ const SignIn = ({navigation}: SignInProps) => {
 
 	const styles = useSignScreenStyles();
 	const theme = useTheme();
+	const modalStyles = useModalStyles();
 
 	const {
 		loading,
-		meta: {email: emailError, password: passwordError}
+		meta: {email: emailError, password: passwordError},
+		remindPassword: {
+			error: remindError,
+			loading: remindLoading,
+			message: remindMessage,
+			showModal: remindShowModal
+		}
 	} = useSelector((state: RootState) => state.auth);
 
 	const [email, onEmailChange] = useControlledInput();
 	const [password, onPasswordChange] = useControlledInput();
+	const [remindEmail, onRemindEmailChange] = useControlledInput();
 
 	const [showPassword, setShowPassword] = useState(false);
+
+	const [remindModalState, setRemindModalState] = useState(false);
+
+	const handleCloseModal = () => setRemindModalState(false);
+	const handleOpenModal = () => setRemindModalState(true);
 
 	const $password = useRef<Input>(null);
 
@@ -47,69 +89,131 @@ const SignIn = ({navigation}: SignInProps) => {
 		dispatch(authSlice.actions.clearErrors());
 	}, [dispatch, navigation]);
 
+	const handleRemindPassword = useCallback(() => {
+		setRemindModalState(false);
+		dispatch(actions.auth.remindPassword({email: remindEmail}));
+	}, [dispatch, remindEmail]);
+
+	const handleCloseModalRemindMessage = useCallback(() => {
+		dispatch(authSlice.actions.hideRemindModal());
+	}, [dispatch]);
+
+	const handleModalRemindMessageClosed = useCallback(() => {
+		dispatch(authSlice.actions.clearRemindModalData());
+	}, [dispatch]);
+
 	const disableSignIn = loading || !email || !password;
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.headerContainer}>
-				<Text style={styles.title}>Welcome</Text>
-				<Text style={styles.subTitle}>Sign In to continue</Text>
-			</View>
-			<View style={[styles.formContainer, {opacity: loading ? 0.5 : 1}]}>
-				<View>
-					<TextField
-						placeholder="email@address.com"
-						label="Email"
-						leftIcon={<Icon name="envelope" size={24} color={theme.pallet.primary} />}
-						containerStyle={styles.removePadding}
-						inputStyle={styles.input}
-						textContentType="emailAddress"
-						returnKeyType="next"
-						onSubmitEditing={() => $password.current?.focus()}
-						onChangeText={onEmailChange}
-						value={email}
-						keyboardType="email-address"
-						errorMessage={emailError}
-						disabled={loading}
-					/>
+		<>
+			<ReactNativeModal
+				renderToHardwareTextureAndroid
+				useNativeDriver
+				useNativeDriverForBackdrop
+				isVisible={remindShowModal}
+				onBackButtonPress={handleCloseModalRemindMessage}
+				onBackdropPress={handleCloseModalRemindMessage}
+				onModalHide={handleModalRemindMessageClosed}>
+				<View style={modalStyles.container}>
+					<Text style={modalStyles.title}>{remindMessage || remindError}</Text>
+					<View style={modalStyles.buttonsContainer}>
+						<Button
+							text={'Ok'}
+							type="bordered"
+							style={modalStyles.okBtn}
+							onPress={handleCloseModalRemindMessage}
+						/>
+					</View>
 				</View>
-				<View>
-					<TextField
-						placeholder="********"
-						label="Password"
-						textContentType="password"
-						leftIcon={<Icon name="lock" size={24} color={theme.pallet.primary} />}
-						ref={$password}
-						rightIcon={
-							<Pressable onPress={handleTogglePassword} style={styles.togglePasswordVisibility}>
-								<Icon
-									name={showPassword ? 'eye-slash' : 'eye'}
-									size={24}
-									color={theme.pallet.primary}
-								/>
-							</Pressable>
-						}
-						containerStyle={styles.removePadding}
-						inputStyle={styles.input}
-						secureTextEntry={!showPassword}
-						returnKeyType="done"
-						onSubmitEditing={handleSubmit}
-						value={password}
-						onChangeText={onPasswordChange}
-						errorMessage={passwordError}
-						disabled={loading}
-					/>
+			</ReactNativeModal>
+			<ReactNativeModal
+				renderToHardwareTextureAndroid
+				useNativeDriver
+				useNativeDriverForBackdrop
+				isVisible={remindModalState}
+				onBackButtonPress={handleCloseModal}
+				onBackdropPress={handleCloseModal}>
+				<View style={modalStyles.container}>
+					<Text style={modalStyles.title}>{'Please enter your email address'}</Text>
+					<View style={modalStyles.textField}>
+						<TextField label="email" value={remindEmail} onChangeText={onRemindEmailChange} />
+					</View>
+					<View style={modalStyles.buttonsContainer}>
+						<Button
+							text={'Send'}
+							type="bordered"
+							style={modalStyles.okBtn}
+							onPress={handleRemindPassword}
+							disabled={!remindEmail || remindLoading}
+						/>
+					</View>
 				</View>
-				<Text style={styles.forgotPassword}>Forgot Password?</Text>
+			</ReactNativeModal>
+			<View style={styles.container}>
+				<View style={styles.headerContainer}>
+					<Text style={styles.title}>Welcome</Text>
+					<Text style={styles.subTitle}>Sign In to continue</Text>
+				</View>
+				<View style={[styles.formContainer, {opacity: loading ? 0.5 : 1}]}>
+					<View>
+						<TextField
+							placeholder="email@address.com"
+							label="Email"
+							leftIcon={<Icon name="envelope" size={24} color={theme.pallet.primary} />}
+							containerStyle={styles.removePadding}
+							inputStyle={styles.input}
+							textContentType="emailAddress"
+							returnKeyType="next"
+							onSubmitEditing={() => $password.current?.focus()}
+							onChangeText={onEmailChange}
+							value={email}
+							keyboardType="email-address"
+							errorMessage={emailError}
+							disabled={loading}
+						/>
+					</View>
+					<View>
+						<TextField
+							placeholder="********"
+							label="Password"
+							textContentType="password"
+							leftIcon={<Icon name="lock" size={24} color={theme.pallet.primary} />}
+							ref={$password}
+							rightIcon={
+								<Pressable
+									onPress={handleTogglePassword}
+									style={styles.togglePasswordVisibility}>
+									<Icon
+										name={showPassword ? 'eye-slash' : 'eye'}
+										size={24}
+										color={theme.pallet.primary}
+									/>
+								</Pressable>
+							}
+							containerStyle={styles.removePadding}
+							inputStyle={styles.input}
+							secureTextEntry={!showPassword}
+							returnKeyType="done"
+							onSubmitEditing={handleSubmit}
+							value={password}
+							onChangeText={onPasswordChange}
+							errorMessage={passwordError}
+							disabled={loading}
+						/>
+					</View>
+					<Pressable onPress={handleOpenModal}>
+						<Text style={styles.forgotPassword}>Forgot Password?</Text>
+					</Pressable>
+				</View>
+				<Button text="Sign In" disabled={disableSignIn} onPress={handleSubmit} activeOpacity={0.8} />
+				<View style={styles.signUpContainer}>
+					<Text style={styles.text}>{"Don't have account?"}</Text>
+					<Pressable hitSlop={{bottom: 10, top: 10, left: 20, right: 20}} onPress={handleSignUp}>
+						<Text style={[styles.link, {paddingLeft: 5}]}>create a new account</Text>
+					</Pressable>
+				</View>
 			</View>
-			<Button text="Sign In" disabled={disableSignIn} onPress={handleSubmit} activeOpacity={0.8} />
-			<View style={styles.signUpContainer}>
-				<Text style={styles.text}>{"Don't have account?"}</Text>
-				<Pressable hitSlop={{bottom: 10, top: 10, left: 20, right: 20}} onPress={handleSignUp}>
-					<Text style={[styles.link, {paddingLeft: 5}]}>create a new account</Text>
-				</Pressable>
-			</View>
-		</View>
+		</>
 	);
 };
 

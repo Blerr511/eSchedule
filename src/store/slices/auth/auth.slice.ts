@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {signIn, signUp} from '../../actions/auth';
+import {remindPassword, signIn, signUp} from '../../actions/auth';
 
 export interface IUser {
 	email: string | null;
@@ -19,6 +19,12 @@ const initialState: {
 		modalText: string | null;
 		modalTitle: string | null;
 	};
+	remindPassword: {
+		loading: boolean;
+		error: string | null;
+		message: string | null;
+		showModal: boolean;
+	};
 } = {
 	user: null,
 	loggedIn: false,
@@ -30,6 +36,12 @@ const initialState: {
 		showModal: false,
 		modalText: null,
 		modalTitle: null
+	},
+	remindPassword: {
+		loading: false,
+		error: null,
+		message: null,
+		showModal: false
 	}
 };
 
@@ -49,6 +61,13 @@ const authSlice = createSlice({
 		clearSignUpModal: state => {
 			state.signedUp.modalText = null;
 			state.signedUp.modalTitle = null;
+		},
+		hideRemindModal: state => {
+			state.remindPassword.showModal = false;
+		},
+		clearRemindModalData: state => {
+			state.remindPassword.error = null;
+			state.remindPassword.message = null;
 		}
 	},
 	extraReducers: builder => {
@@ -99,6 +118,26 @@ const authSlice = createSlice({
 						email: action.payload.message
 					};
 				} else state.error = action.payload.message;
+			}
+		});
+
+		builder.addCase(remindPassword.pending, state => {
+			state.remindPassword.loading = true;
+			state.remindPassword.error = null;
+			state.remindPassword.message = null;
+		});
+
+		builder.addCase(remindPassword.fulfilled, (state, action) => {
+			state.remindPassword.loading = false;
+			state.remindPassword.message = action.payload.email;
+			state.remindPassword.showModal = true;
+		});
+
+		builder.addCase(remindPassword.rejected, (state, action) => {
+			state.remindPassword.loading = false;
+			if (action.payload?.message) {
+				state.remindPassword.error = action.payload.message;
+				state.remindPassword.showModal = true;
 			}
 		});
 	}
