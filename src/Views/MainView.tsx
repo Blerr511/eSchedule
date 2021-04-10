@@ -5,7 +5,8 @@ import {useSelector} from 'react-redux';
 import {auth} from 'store/selectors';
 
 import HomeScreen from './HomeScreen';
-import {SignIn, SignUp} from './SignScreen';
+import SignScreen from './SignScreen';
+
 import {RootStackParamList} from './types';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -17,14 +18,11 @@ const MainView: React.FC<MainViewProps> = () => {
 
 	return (
 		<NavigationContainer>
-			<Stack.Navigator initialRouteName={isLoggedIn ? 'HomeScreen' : 'SignIn'} headerMode="none">
+			<Stack.Navigator initialRouteName={isLoggedIn ? 'HomeScreen' : 'SignScreen'} headerMode="none">
 				{isLoggedIn ? (
 					<Stack.Screen name="HomeScreen" component={HomeScreen} />
 				) : (
-					<>
-						<Stack.Screen name="SignIn" component={SignIn} />
-						<Stack.Screen name="SignUp" component={SignUp} />
-					</>
+					<Stack.Screen name="SignScreen" component={SignScreen} />
 				)}
 			</Stack.Navigator>
 		</NavigationContainer>
