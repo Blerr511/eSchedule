@@ -120,7 +120,7 @@ const SignIn = ({navigation}: SignInProps) => {
 			dispatch(authSlice.actions.clearSignInErrors());
 		};
 	}, [dispatch]);
-	console.log(showModal);
+
 	return (
 		<>
 			<ReactNativeModal
