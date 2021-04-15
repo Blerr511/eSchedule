@@ -10,15 +10,32 @@ export const signIn = createAsyncThunk<
 	services.Auth.Login({email, password}).catch(err => rejectWithValue(err?.userInfo))
 );
 
+export interface SignUpInterface extends VerifyEmailPayload {
+	passwordConfirm: string;
+}
+
 export const signUp = createAsyncThunk<
-	VerifyEmailPayload,
-	VerifyEmailPayload,
-	{rejectValue: {message: string; code: 'wrong-password' | 'invalid-email'}}
->('@AUTH/signUp', ({email}, {rejectWithValue}) =>
-	services.Auth.SignUp({email})
-		.then(() => ({email}))
-		.catch(err => rejectWithValue(err?.userInfo))
-);
+	{email: string},
+	SignUpInterface,
+	{
+		rejectValue: {
+			message: string;
+			code: 'wrong-password' | 'invalid-email' | 'wrong-confirm-password' | 'weak-password';
+		};
+	}
+>('@AUTH/signUp', async ({email, password, passwordConfirm}, {rejectWithValue}) => {
+	try {
+		if (!email) return rejectWithValue({code: 'invalid-email', message: 'Required !'});
+		if (!password) return rejectWithValue({code: 'wrong-password', message: 'Required !'});
+		if (password !== passwordConfirm)
+			return rejectWithValue({code: 'wrong-confirm-password', message: 'Invalid password confirm'});
+
+		await services.Auth.SignUp({email, password});
+		return {email};
+	} catch (error) {
+		return rejectWithValue(error?.userInfo);
+	}
+});
 
 export const remindPassword = createAsyncThunk<
 	RemindPasswordPayload,

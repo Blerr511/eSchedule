@@ -2,18 +2,18 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import Button from 'components/Button/Button';
 import TextField from 'components/TextField';
 import {createStyleSheet, useTheme} from 'hooks/useTheme';
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Pressable, Text, View} from 'react-native';
-import {RootStackParamList} from 'Views';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {Input} from 'react-native-elements';
 import {useDispatch, useSelector} from 'react-redux';
 import actions from 'store/actions';
 import {useControlledInput} from 'hooks';
-import {RootState} from 'store/store';
 import useSignScreenStyles from '../styles';
 import authSlice from 'store/slices/auth';
 import ReactNativeModal from 'react-native-modal';
+import {SignScreenParamList} from 'Views/types';
+import {selectors} from 'store';
 
 const useModalStyles = createStyleSheet(theme => ({
 	container: {backgroundColor: theme.pallet.background.tertiary, padding: theme.spacing(3)},
@@ -44,7 +44,7 @@ const useModalStyles = createStyleSheet(theme => ({
 }));
 
 export interface SignInProps {
-	navigation: StackNavigationProp<RootStackParamList, 'SignIn'>;
+	navigation: StackNavigationProp<SignScreenParamList, 'SignIn'>;
 }
 
 const SignIn = ({navigation}: SignInProps) => {
@@ -57,13 +57,16 @@ const SignIn = ({navigation}: SignInProps) => {
 	const {
 		loading,
 		meta: {email: emailError, password: passwordError},
-		remindPassword: {
-			error: remindError,
-			loading: remindLoading,
-			message: remindMessage,
-			showModal: remindShowModal
-		}
-	} = useSelector((state: RootState) => state.auth);
+		error,
+		showModal
+	} = useSelector(selectors.auth.signIn);
+
+	const {
+		error: remindError,
+		loading: remindLoading,
+		message: remindMessage,
+		showModal: remindShowModal
+	} = useSelector(selectors.auth.remindPassword);
 
 	const [email, onEmailChange] = useControlledInput();
 	const [password, onPasswordChange] = useControlledInput();
@@ -86,7 +89,7 @@ const SignIn = ({navigation}: SignInProps) => {
 
 	const handleSignUp = useCallback(() => {
 		navigation.navigate('SignUp');
-		dispatch(authSlice.actions.clearErrors());
+		dispatch(authSlice.actions.clearSignInErrors());
 	}, [dispatch, navigation]);
 
 	const handleRemindPassword = useCallback(() => {
@@ -102,10 +105,44 @@ const SignIn = ({navigation}: SignInProps) => {
 		dispatch(authSlice.actions.clearRemindModalData());
 	}, [dispatch]);
 
+	const handleCloseSignInModal = useCallback(() => {
+		dispatch(authSlice.actions.hideSignInModal());
+	}, [dispatch]);
+
+	const handleSignInModalClosed = useCallback(() => {
+		dispatch(authSlice.actions.clearSignInErrors());
+	}, [dispatch]);
+
 	const disableSignIn = loading || !email || !password;
 
+	useEffect(() => {
+		return () => {
+			dispatch(authSlice.actions.clearSignInErrors());
+		};
+	}, [dispatch]);
+	console.log(showModal);
 	return (
 		<>
+			<ReactNativeModal
+				renderToHardwareTextureAndroid
+				useNativeDriver
+				useNativeDriverForBackdrop
+				isVisible={showModal}
+				onBackButtonPress={handleCloseSignInModal}
+				onBackdropPress={handleCloseSignInModal}
+				onModalHide={handleSignInModalClosed}>
+				<View style={modalStyles.container}>
+					<Text style={modalStyles.title}>{error}</Text>
+					<View style={modalStyles.buttonsContainer}>
+						<Button
+							text={'Ok'}
+							type="bordered"
+							style={modalStyles.okBtn}
+							onPress={handleCloseSignInModal}
+						/>
+					</View>
+				</View>
+			</ReactNativeModal>
 			<ReactNativeModal
 				renderToHardwareTextureAndroid
 				useNativeDriver
@@ -168,7 +205,7 @@ const SignIn = ({navigation}: SignInProps) => {
 							onChangeText={onEmailChange}
 							value={email}
 							keyboardType="email-address"
-							errorMessage={emailError}
+							errorMessage={emailError || undefined}
 							disabled={loading}
 						/>
 					</View>
@@ -197,7 +234,7 @@ const SignIn = ({navigation}: SignInProps) => {
 							onSubmitEditing={handleSubmit}
 							value={password}
 							onChangeText={onPasswordChange}
-							errorMessage={passwordError}
+							errorMessage={passwordError || undefined}
 							disabled={loading}
 						/>
 					</View>
