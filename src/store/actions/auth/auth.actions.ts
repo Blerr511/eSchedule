@@ -5,7 +5,7 @@ import {LoginPayload, RemindPasswordPayload, VerifyEmailPayload} from 'services/
 export const signIn = createAsyncThunk<
 	any,
 	LoginPayload,
-	{rejectValue: {message: string; code: 'wrong-password' | 'invalid-email'}}
+	{rejectValue: {message: string; code: 'wrong-password' | 'invalid-email' | 'email-already-in-use'}}
 >('@AUTH/signIn', ({email, password}, {rejectWithValue}) =>
 	services.Auth.Login({email, password}).catch(err => rejectWithValue(err?.userInfo))
 );
@@ -20,7 +20,12 @@ export const signUp = createAsyncThunk<
 	{
 		rejectValue: {
 			message: string;
-			code: 'wrong-password' | 'invalid-email' | 'wrong-confirm-password' | 'weak-password';
+			code:
+				| 'wrong-password'
+				| 'invalid-email'
+				| 'wrong-confirm-password'
+				| 'weak-password'
+				| 'email-already-in-use';
 		};
 	}
 >('@AUTH/signUp', async ({email, password, passwordConfirm}, {rejectWithValue}) => {

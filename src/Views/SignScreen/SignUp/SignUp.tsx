@@ -53,6 +53,7 @@ const SignUp = ({navigation}: SignUpProps) => {
 		modalText,
 		modalTitle,
 		showModal,
+		error,
 		loading,
 		meta: {email: emailError, password: passwordError, confirmPassword: confirmPasswordError}
 	} = useSelector(selectors.auth.signUp);
@@ -76,9 +77,11 @@ const SignUp = ({navigation}: SignUpProps) => {
 	]);
 
 	const handleModalClosed = useCallback(() => {
-		dispatch(authSlice.actions.clearSignUpModal());
-		navigation.navigate('SignIn');
-	}, [dispatch, navigation]);
+		if (showModal === 'message') {
+			dispatch(authSlice.actions.clearSignUpModal());
+			navigation.navigate('SignIn');
+		}
+	}, [dispatch, navigation, showModal]);
 
 	const handleSendEmail = useCallback(() => {
 		handleCloseModal();
@@ -99,13 +102,13 @@ const SignUp = ({navigation}: SignUpProps) => {
 				renderToHardwareTextureAndroid
 				useNativeDriver
 				useNativeDriverForBackdrop
-				isVisible={showModal}
+				isVisible={Boolean(showModal)}
 				onBackButtonPress={handleCloseModal}
 				onBackdropPress={handleCloseModal}
 				onModalHide={handleModalClosed}>
 				<View style={modalStyles.container}>
 					<Text style={modalStyles.title}>{modalTitle}</Text>
-					<Text style={modalStyles.text}>{modalText}</Text>
+					<Text style={modalStyles.text}>{showModal === 'error' ? error : modalText}</Text>
 					<View style={modalStyles.buttonsContainer}>
 						<Button
 							text={'Ok'}

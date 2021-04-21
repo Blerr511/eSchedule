@@ -15,7 +15,7 @@ export interface RemindPasswordInitialStat
 
 export interface SignUpInitialState
 	extends BaseRequestReducer<Partial<Record<'email' | 'password' | 'confirmPassword', string | null>>> {
-	showModal: boolean;
+	showModal: false | 'message' | 'error';
 	modalText: string | null;
 	modalTitle: string | null;
 }
@@ -78,13 +78,15 @@ const authSlice = createSlice({
 		hideSignInModal: state => {
 			state.signIn.showModal = false;
 		},
-		toggleSignUpModal: (state, action: PayloadAction<boolean | undefined>) => {
-			if (action.payload === undefined) state.signUp.showModal = !state.signUp.showModal;
+		toggleSignUpModal: (state, action: PayloadAction<false | 'error' | 'message'>) => {
+			if (action.payload === undefined) state.signUp.showModal = false;
 			else state.signUp.showModal = action.payload;
 		},
 		clearSignUpModal: state => {
 			state.signUp.modalText = null;
 			state.signUp.modalTitle = null;
+			state.signUp.message = null;
+			state.signUp.error = null;
 		},
 		hideRemindModal: state => {
 			state.remindPassword.showModal = false;
@@ -132,16 +134,13 @@ const authSlice = createSlice({
 		});
 
 		builder.addCase(signUp.fulfilled, (state, action) => {
-			console.log(action);
-			state.signUp.showModal = true;
+			state.signUp.showModal = 'message';
 			state.signUp.modalTitle = `Your activation link has been sent to \n${action.payload.email}`;
 			state.signUp.modalText = 'Please check your email address';
 			state.signUp.loading = false;
 		});
 
 		builder.addCase(signUp.rejected, (state, action) => {
-			console.log(action);
-
 			state.signUp.loading = false;
 			if (action.payload) {
 				switch (action.payload.code) {
@@ -154,6 +153,12 @@ const authSlice = createSlice({
 						break;
 					case 'wrong-confirm-password':
 						state.signUp.meta.confirmPassword = action.payload.message;
+						break;
+					case 'email-already-in-use':
+						state.signUp.modalTitle = 'Failed to sign up';
+						state.signUp.modalText = action.payload.message;
+						state.signUp.error = action.payload.message;
+						state.signUp.showModal = 'error';
 						break;
 					default:
 						state.signUp.error = action.payload.message;
