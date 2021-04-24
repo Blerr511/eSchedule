@@ -32,8 +32,7 @@ export const Login = ({email, password}: LoginPayload) =>
 			user: {
 				email: data.user.email,
 				name: data.user.displayName,
-				uid: data.user.uid,
-				token: await data.user.getIdToken()
+				uid: data.user.uid
 			}
 		}));
 
