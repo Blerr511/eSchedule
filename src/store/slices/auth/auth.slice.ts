@@ -94,6 +94,16 @@ const authSlice = createSlice({
 		clearRemindModalData: state => {
 			state.remindPassword.error = null;
 			state.remindPassword.message = null;
+		},
+		autStateChange: (state, {payload: {user}}: PayloadAction<{user: IUser | null}>) => {
+			state.signIn.loading = false;
+
+			if (user) {
+				state.signIn.loggedIn = true;
+				state.signIn.user = {email: user.email, name: user.name, uid: user.uid};
+			} else {
+				state.signIn.loggedIn = false;
+			}
 		}
 	},
 	extraReducers: builder => {
@@ -101,12 +111,6 @@ const authSlice = createSlice({
 			state.signIn.loading = true;
 			state.signIn.error = null;
 			state.signIn.meta = {};
-		});
-
-		builder.addCase(signIn.fulfilled, (state, action) => {
-			state.signIn.loading = false;
-			state.signIn.user = action.payload.user;
-			state.signIn.loggedIn = true;
 		});
 
 		builder.addCase(signIn.rejected, (state, action) => {
