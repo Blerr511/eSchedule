@@ -1,14 +1,16 @@
-//@flow
-import * as React from 'react';
-import {Text, View} from 'react-native';
+import React from 'react';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
 
-export interface SignScreenProps {}
+const Tab = createMaterialTopTabNavigator();
 
-const SignScreen: React.FC<SignScreenProps> = () => {
+const SignScreen = () => {
 	return (
-		<View>
-			<Text style={{color: 'black'}}>SignScreen</Text>
-		</View>
+		<Tab.Navigator tabBar={() => null}>
+			<Tab.Screen name="SignIn" component={SignIn} />
+			<Tab.Screen name="SignUp" component={SignUp} />
+		</Tab.Navigator>
 	);
 };
 

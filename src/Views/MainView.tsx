@@ -1,19 +1,39 @@
-import * as React from 'react';
-
-import SignScreen from './SignScreen';
-import HomeScreen from './HomeScreen';
-
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {useSelector} from 'react-redux';
-import {loggedIn} from 'store/selectors/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import {auth} from 'store/selectors';
 
-const Stack = createStackNavigator();
+import HomeScreen from './HomeScreen';
+import SignScreen from './SignScreen';
+
+import {RootStackParamList} from './types';
+import {firebase} from '@react-native-firebase/auth';
+import {RootState} from 'store/store';
+import authSlice from 'store/slices/auth';
+import Loading from 'components/Loading';
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 export interface MainViewProps {}
 
 const MainView: React.FC<MainViewProps> = () => {
-	const isLoggedIn = useSelector(loggedIn);
+	const dispatch = useDispatch();
+
+	const isLoggedIn = useSelector(auth.loggedIn);
+	const loading = useSelector((state: RootState) => state.auth.signIn.loading);
+
+	useEffect(() => {
+		return firebase.auth().onAuthStateChanged(user => {
+			dispatch(
+				authSlice.actions.autStateChange({
+					user: user ? {email: user.email, name: user.displayName, uid: user.uid} : null
+				})
+			);
+		});
+	}, [dispatch]);
+
+	if (loading) return <Loading.FullScreen />;
 
 	return (
 		<NavigationContainer>

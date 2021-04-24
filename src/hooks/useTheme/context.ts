@@ -5,26 +5,38 @@ export const defaultTheme: ITheme & IThemeGetter & IThemeSetter = {
 	pallet: {
 		background: {
 			primary: '#ffffff',
-			secondary: '#000000'
+			secondary: '#000000',
+			tertiary: 'gray'
 		},
 		border: {
 			primary: '#ffffff',
-			secondary: '#000000'
-		}
+			secondary: '#000000',
+			tertiary: 'gray'
+		},
+		primary: 'blue',
+		secondary: 'red',
+		tertiary: 'green'
 	},
 	typography: {
 		color: {
 			primary: '#000000',
-			secondary: 'gray'
+			secondary: '#ffffff',
+			tertiary: 'gray'
 		},
 		fontSize: {
-			medium: 12
+			extraSmall: 8,
+			small: 12,
+			medium: 16,
+			large: 20,
+			extraLarge: 24
 		}
 	},
+	shape: {borderRadius: 5},
 	space: 8,
 	spacing(space) {
 		return this.space * space;
-	}
+	},
+	isDark: false
 };
 
 const themeContext = createContext<{
