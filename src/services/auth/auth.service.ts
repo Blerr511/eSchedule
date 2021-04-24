@@ -28,7 +28,14 @@ export const Login = ({email, password}: LoginPayload) =>
 				});
 			return data;
 		})
-		.then(data => ({user: {email: data.user.email, name: data.user.displayName, uid: data.user.uid}}));
+		.then(async data => ({
+			user: {
+				email: data.user.email,
+				name: data.user.displayName,
+				uid: data.user.uid,
+				token: await data.user.getIdToken()
+			}
+		}));
 
 export const SignUp = async ({email, password}: VerifyEmailPayload) =>
 	auth()
