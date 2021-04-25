@@ -22,4 +22,11 @@ axiosClient.interceptors.request.use(
 	}
 );
 
+export interface DefaultResponse<T = any> {
+	status: 'ok' | 'error';
+	message: string;
+	data: T;
+	meta: any;
+}
+
 export default axiosClient;
