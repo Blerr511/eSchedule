@@ -1,4 +1,5 @@
 import auth from '@react-native-firebase/auth';
+import axiosClient from 'helpers/axiosClient';
 
 export interface VerifyEmailPayload {
 	email: string;
@@ -39,8 +40,9 @@ export const Login = ({email, password}: LoginPayload) =>
 export const SignUp = async ({email, password}: VerifyEmailPayload) =>
 	auth()
 		.createUserWithEmailAndPassword(email, password)
-		.then(({user}) => {
+		.then(async ({user}) => {
 			user.sendEmailVerification();
+			await axiosClient.put('/users/student', {uid: user.uid});
 			return user;
 		});
 
