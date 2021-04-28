@@ -1,6 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import services from 'services';
 import {LoginPayload, RemindPasswordPayload, VerifyEmailPayload} from 'services/auth';
+import {IUserInfo} from 'store/slices/auth';
 
 export const signIn = createAsyncThunk<
 	any,
@@ -51,3 +52,5 @@ export const remindPassword = createAsyncThunk<
 		.then(() => ({email}))
 		.catch(err => rejectWithValue(err?.userInfo))
 );
+
+export const getMyUserInfo = createAsyncThunk<IUserInfo>('@AUTH/getMyUserInfo', services.Auth.getMyUserInfo);
