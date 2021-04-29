@@ -12,7 +12,7 @@ const App = () => {
 	return (
 		<SafeAreaProvider>
 			<Provider store={store}>
-				<ThemeProvider themes={themes} defaultTheme={colorTheme || 'light'}>
+				<ThemeProvider themes={themes} defaultTheme={'dark'}>
 					<MainView />
 				</ThemeProvider>
 			</Provider>

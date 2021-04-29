@@ -1,8 +1,9 @@
 import * as auth from './auth';
+import {actions as lecturerSchedule} from 'containers/LecturerSchedule/store';
 
 const actions = {
-	auth
+	auth,
+	lecturerSchedule
 };
 
 export default actions;
-export * from './auth';

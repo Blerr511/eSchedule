@@ -1,9 +1,10 @@
 import slices from '../slices';
+import {reducer as lecturerSchedule} from 'containers/LecturerSchedule/store';
+import {combineReducers} from 'redux';
 
-export const auth = slices.auth.reducer;
-
-const reducers = {
-	auth
-};
+const reducers = combineReducers({
+	auth: slices.auth.reducer,
+	lecturerSchedule
+});
 
 export default reducers;
