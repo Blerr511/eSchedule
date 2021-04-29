@@ -1,5 +1,5 @@
 import database, {FirebaseDatabaseTypes} from '@react-native-firebase/database';
-import {useEffect, useRef} from 'react';
+import {useEffect, useMemo, useRef} from 'react';
 
 export type DataListenerCb = (
 	data: FirebaseDatabaseTypes.DataSnapshot,
@@ -15,15 +15,19 @@ export const useDatabaseListener = (
 ) => {
 	const $cb = useRef(callBack);
 
+	const _ref = useMemo(() => database().ref(ref), [ref]);
+
 	useEffect(() => {
 		$cb.current = callBack;
 	}, [callBack]);
 
 	useEffect(() => {
-		if (!options?.disable) database().ref(ref).on(event, $cb.current);
+		if (!options?.disable) _ref.on(event, $cb.current);
 
 		return () => {
-			database().ref(ref).off(event, $cb.current);
+			_ref.off(event, $cb.current);
 		};
-	}, [event, options?.disable, ref]);
+	}, [_ref, event, options?.disable]);
+
+	return _ref;
 };
