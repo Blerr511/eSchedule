@@ -1,6 +1,7 @@
 import app from '../app';
 import {FacultyController} from './controllers/Faculty';
 import {GroupController} from './controllers/GroupController.ts';
+import {LessonController} from './controllers/LessonController';
 import {UsersController} from './controllers/UsersController';
 
 export class RTDatabase {
@@ -19,5 +20,9 @@ export class RTDatabase {
 
 	public get group() {
 		return new GroupController(this.db);
+	}
+
+	public get lesson() {
+		return new LessonController(this.db);
 	}
 }

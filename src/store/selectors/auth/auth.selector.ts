@@ -4,8 +4,6 @@ export const auth = (state: RootState) => state.auth;
 
 auth.signIn = (state: RootState) => state.auth.signIn;
 
-auth.userInfo = (state: RootState) => auth.signIn(state).userInfo;
-
 auth.loggedIn = (state: RootState) => state.auth.signIn.loggedIn;
 
 auth.user = (state: RootState) => state.auth.signIn.user;

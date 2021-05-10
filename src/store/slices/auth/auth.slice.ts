@@ -1,16 +1,11 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {DataBaseItem} from 'hooks';
+import {DBItem} from 'helpers/firebase/RTDatabase/BaseController.abstract';
 import {BaseRequestReducer} from 'types';
 import {remindPassword, signIn, signUp} from '../../actions/auth';
 
 export type IRole = 'student' | 'lecturer' | 'admin';
 
-export interface IUserInfo extends DataBaseItem {
-	uid: string;
-	role: IRole;
-}
-
-export interface IUser extends DataBaseItem {
+export interface IUser extends DBItem {
 	email: string | null;
 	name?: string | null;
 	role: IRole;
