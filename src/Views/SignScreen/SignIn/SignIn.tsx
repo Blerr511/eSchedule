@@ -5,7 +5,7 @@ import {createStyleSheet, useTheme} from 'hooks/useTheme';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {Pressable, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {TextInput as Input} from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import actions from 'store/actions';
 import {useControlledInput} from 'hooks';
@@ -14,7 +14,6 @@ import authSlice from 'store/slices/auth';
 import ReactNativeModal from 'react-native-modal';
 import {SignScreenParamList} from 'Views/types';
 import {selectors} from 'store';
-import { TextInput } from 'react-native-gesture-handler';
 
 const useModalStyles = createStyleSheet(theme => ({
 	container: {backgroundColor: theme.pallet.background.tertiary, padding: theme.spacing(3)},

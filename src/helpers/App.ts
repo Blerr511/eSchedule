@@ -1,5 +1,5 @@
-import {initDevHelper} from './dev/initDevHelper';
-import firebaseApp, {initFirebase} from './firebase';
+import {initDevHelper} from 'helpers/dev/initDevHelper';
+import firebaseApp, {initFirebase} from 'helpers/firebase';
 import {DB_URL} from '@env';
 
 export class App {

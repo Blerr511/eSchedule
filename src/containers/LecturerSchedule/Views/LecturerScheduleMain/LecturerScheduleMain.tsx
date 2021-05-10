@@ -21,7 +21,7 @@ const LecturerScheduleMain = ({navigation}: LecturerScheduleMainProps) => {
 	const styles = useStyles();
 
 	const handleCreateSchedule = () => {
-		navigation.push('SelectFaculty');
+		navigation.navigate('CreateSchedule');
 	};
 
 	return (
