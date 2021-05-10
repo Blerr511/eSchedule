@@ -1,10 +1,39 @@
-import React from 'react';
-import {Text, View} from 'react-native';
+import {NavigationProp, RouteProp} from '@react-navigation/core';
+import {RTDatabase} from 'helpers/firebase';
+import {IGroup} from 'helpers/firebase/RTDatabase/controllers/GroupController.ts';
+import React, {useEffect, useState} from 'react';
+import {View} from 'react-native';
+import {ListItem} from 'react-native-elements';
+import {ScheduleFlow, ScheduleFlowParamList} from '../types';
 
-const GroupFlow = () => {
+export interface GroupFlowProps {
+	navigation: NavigationProp<ScheduleFlowParamList, ScheduleFlow.GROUP>;
+	route: RouteProp<ScheduleFlowParamList, ScheduleFlow.GROUP>;
+}
+
+const GroupFlow = ({navigation, route}: GroupFlowProps) => {
+	const [groups, setGroups] = useState<IGroup[]>([]);
+
+	const handleSelectFactory = (uid: string) => () => {
+		navigation.navigate(ScheduleFlow.LESSON, {groupId: uid});
+	};
+
+	useEffect(() => {
+		return new RTDatabase().group.pipe(setGroups, group => group.facultyId === route.params.facultyId);
+	}, [route.params.facultyId]);
+
 	return (
 		<View>
-			<Text>Group</Text>
+			{groups.map(group => {
+				return (
+					<ListItem key={group.uid} bottomDivider onPress={handleSelectFactory(group.uid)}>
+						<ListItem.Content>
+							<ListItem.Title>{group.title}</ListItem.Title>
+						</ListItem.Content>
+						<ListItem.Chevron />
+					</ListItem>
+				);
+			})}
 		</View>
 	);
 };

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RTDatabase} from 'helpers/firebase';
 import {IFaculty} from 'helpers/firebase/RTDatabase/controllers/Faculty';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {ScheduleFlow, ScheduleFlowParamList} from '../types';
 
