@@ -12,13 +12,11 @@ import {firebase} from '@react-native-firebase/auth';
 import {RootState} from 'store/store';
 import authSlice from 'store/slices/auth';
 import Loading from 'components/Loading';
-import services from 'services';
+import {RTDatabase} from 'helpers/firebase';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export interface MainViewProps {}
-
-const MainView: React.FC<MainViewProps> = () => {
+const MainView = () => {
 	const dispatch = useDispatch();
 
 	const isLoggedIn = useSelector(auth.loggedIn);
@@ -26,19 +24,19 @@ const MainView: React.FC<MainViewProps> = () => {
 
 	useEffect(() => {
 		return firebase.auth().onAuthStateChanged(async user => {
+			const db = new RTDatabase();
 			if (user?.emailVerified) {
-				const userInfo = await services.Auth.getMyUserInfo();
+				const userData = await db.users.getUser(user?.uid);
+
 				dispatch(
 					authSlice.actions.autStateChange({
-						user: {email: user.email, name: user.displayName, uid: user.uid},
-						userInfo
+						user: {email: user.email, name: user.displayName, uid: user.uid, role: userData.role}
 					})
 				);
 			} else
 				dispatch(
 					authSlice.actions.autStateChange({
-						user: null,
-						userInfo: null
+						user: null
 					})
 				);
 		});

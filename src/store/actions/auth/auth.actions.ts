@@ -1,7 +1,7 @@
 import {createAsyncThunk} from '@reduxjs/toolkit';
+import {RTDatabase} from 'helpers/firebase';
 import services from 'services';
 import {LoginPayload, RemindPasswordPayload, VerifyEmailPayload} from 'services/auth';
-import {IUserInfo} from 'store/slices/auth';
 
 export const signIn = createAsyncThunk<
 	any,
@@ -36,7 +36,8 @@ export const signUp = createAsyncThunk<
 		if (password !== passwordConfirm)
 			return rejectWithValue({code: 'wrong-confirm-password', message: 'Invalid password confirm'});
 
-		await services.Auth.SignUp({email, password});
+		const res = await services.Auth.SignUp({email, password});
+		await new RTDatabase().users.createUser({email, uid: res.uid, role: 'student'});
 		return {email};
 	} catch (error) {
 		return rejectWithValue(error?.userInfo);
@@ -52,5 +53,3 @@ export const remindPassword = createAsyncThunk<
 		.then(() => ({email}))
 		.catch(err => rejectWithValue(err?.userInfo))
 );
-
-export const getMyUserInfo = createAsyncThunk<IUserInfo>('@AUTH/getMyUserInfo', services.Auth.getMyUserInfo);

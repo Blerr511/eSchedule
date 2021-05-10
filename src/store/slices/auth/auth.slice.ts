@@ -1,18 +1,19 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {DataBaseItem} from 'hooks';
 import {BaseRequestReducer} from 'types';
 import {remindPassword, signIn, signUp} from '../../actions/auth';
 
 export type IRole = 'student' | 'lecturer' | 'admin';
 
-export interface IUserInfo {
+export interface IUserInfo extends DataBaseItem {
 	uid: string;
 	role: IRole;
 }
 
-export interface IUser {
+export interface IUser extends DataBaseItem {
 	email: string | null;
-	name: string | null;
-	uid: string | null;
+	name?: string | null;
+	role: IRole;
 }
 
 export interface RemindPasswordInitialStat
@@ -31,7 +32,6 @@ export interface SignInInitialState
 	extends BaseRequestReducer<Partial<Record<'email' | 'password', string | null>>> {
 	loggedIn: boolean;
 	user: IUser | null;
-	userInfo: IUserInfo | null;
 	showModal: boolean;
 }
 
@@ -44,7 +44,6 @@ export interface AuthInitialState {
 const initialState: AuthInitialState = {
 	signIn: {
 		user: null,
-		userInfo: null,
 		loggedIn: false,
 		loading: false,
 		error: null,
@@ -104,19 +103,14 @@ const authSlice = createSlice({
 			state.remindPassword.error = null;
 			state.remindPassword.message = null;
 		},
-		autStateChange: (
-			state,
-			{payload: {user, userInfo}}: PayloadAction<{user: IUser | null; userInfo: IUserInfo | null}>
-		) => {
+		autStateChange: (state, {payload: {user}}: PayloadAction<{user: IUser | null}>) => {
 			state.signIn.loading = false;
 
 			if (user) {
 				state.signIn.loggedIn = true;
-				state.signIn.user = {email: user.email, name: user.name, uid: user.uid};
-				state.signIn.userInfo = userInfo;
+				state.signIn.user = {email: user.email, name: user.name, uid: user.uid, role: user.role};
 			} else {
 				state.signIn.loggedIn = false;
-				state.signIn.userInfo = null;
 				state.signIn.user = null;
 			}
 		}

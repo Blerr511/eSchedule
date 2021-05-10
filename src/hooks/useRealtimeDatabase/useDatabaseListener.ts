@@ -1,4 +1,5 @@
-import database, {FirebaseDatabaseTypes} from '@react-native-firebase/database';
+import db, {FirebaseDatabaseTypes} from '@react-native-firebase/database';
+import app from 'helpers/firebase';
 import {useEffect, useMemo, useRef} from 'react';
 
 export type DataListenerCb = (
@@ -15,7 +16,7 @@ export const useDatabaseListener = (
 ) => {
 	const $cb = useRef(callBack);
 
-	const _ref = useMemo(() => database().ref(ref), [ref]);
+	const _ref = useMemo(() => db(app()).ref(ref), [ref]);
 
 	useEffect(() => {
 		$cb.current = callBack;
