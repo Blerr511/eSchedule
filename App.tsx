@@ -17,13 +17,11 @@ const App = () => {
 		app.init().then(() => setReady(true));
 	});
 
-	if (!ready) return <Loading.FullScreen />;
-
 	return (
 		<SafeAreaProvider>
 			<Provider store={store}>
 				<ThemeProvider themes={themes} defaultTheme={'dark'}>
-					<MainView />
+					{ready ? <MainView /> : <Loading.FullScreen />}
 				</ThemeProvider>
 			</Provider>
 		</SafeAreaProvider>

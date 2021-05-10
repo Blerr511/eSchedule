@@ -59,7 +59,7 @@ const ConfirmDialog = ({
 	...rest
 }: ConfirmDialogProps) => {
 	const modalStyles = useModalStyles();
-
+	console.log(modalStyles);
 	return (
 		<Modal
 			useNativeDriver={useNativeDriver}
