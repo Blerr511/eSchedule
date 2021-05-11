@@ -1,4 +1,5 @@
 import {NavigationProp, RouteProp} from '@react-navigation/core';
+import Loading from 'components/Loading';
 import {RTDatabase} from 'helpers/firebase';
 import {ILesson} from 'helpers/firebase/RTDatabase/controllers/LessonController';
 import React, {useEffect, useState} from 'react';
@@ -15,7 +16,7 @@ export interface LessonFlowProps {
 }
 
 const LessonFlow = ({navigation, route}: LessonFlowProps) => {
-	const [lessons, setLessons] = useState<ILesson[]>([]);
+	const [lessons, setLessons] = useState<ILesson[] | null>(null);
 
 	const {groupId} = route.params;
 
@@ -33,17 +34,21 @@ const LessonFlow = ({navigation, route}: LessonFlowProps) => {
 	}, [groupId, user?.uid]);
 
 	return (
-		<View>
-			{lessons.map(lesson => {
-				return (
-					<ListItem key={lesson.uid} bottomDivider onPress={handleSelectFactory(lesson.uid)}>
-						<ListItem.Content>
-							<ListItem.Title>{lesson.title}</ListItem.Title>
-						</ListItem.Content>
-						<ListItem.Chevron />
-					</ListItem>
-				);
-			})}
+		<View style={{flex: 1}}>
+			{!lessons ? (
+				<Loading />
+			) : (
+				lessons.map(lesson => {
+					return (
+						<ListItem key={lesson.uid} bottomDivider onPress={handleSelectFactory(lesson.uid)}>
+							<ListItem.Content>
+								<ListItem.Title>{lesson.title}</ListItem.Title>
+							</ListItem.Content>
+							<ListItem.Chevron />
+						</ListItem>
+					);
+				})
+			)}
 		</View>
 	);
 };

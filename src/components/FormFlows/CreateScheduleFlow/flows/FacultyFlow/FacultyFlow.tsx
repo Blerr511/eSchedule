@@ -5,13 +5,14 @@ import {IFaculty} from 'helpers/firebase/RTDatabase/controllers/Faculty';
 import {View} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import {ScheduleFlow, ScheduleFlowParamList} from '../types';
+import Loading from 'components/Loading';
 
 export interface FacultyFlowProps {
 	navigation: StackNavigationProp<ScheduleFlowParamList, ScheduleFlow.FACULTY>;
 }
 
 const FacultyFlow = ({navigation}: FacultyFlowProps) => {
-	const [faculties, setFaculties] = useState<IFaculty[]>([]);
+	const [faculties, setFaculties] = useState<IFaculty[] | null>(null);
 
 	const handleSelectFactory = (uid: string) => () => {
 		navigation.navigate(ScheduleFlow.GROUP, {facultyId: uid});
@@ -22,20 +23,24 @@ const FacultyFlow = ({navigation}: FacultyFlowProps) => {
 	}, []);
 
 	return (
-		<View>
-			{faculties.map(faculty => {
-				return (
-					<ListItem key={faculty.uid} bottomDivider onPress={handleSelectFactory(faculty.uid)}>
-						<ListItem.Content>
-							<ListItem.Title>{faculty.title}</ListItem.Title>
-							<ListItem.Subtitle numberOfLines={1}>
-								{faculty.longTitle || '...'}
-							</ListItem.Subtitle>
-						</ListItem.Content>
-						<ListItem.Chevron />
-					</ListItem>
-				);
-			})}
+		<View style={{flex: 1}}>
+			{!faculties ? (
+				<Loading />
+			) : (
+				faculties.map(faculty => {
+					return (
+						<ListItem key={faculty.uid} bottomDivider onPress={handleSelectFactory(faculty.uid)}>
+							<ListItem.Content>
+								<ListItem.Title>{faculty.title}</ListItem.Title>
+								<ListItem.Subtitle numberOfLines={1}>
+									{faculty.longTitle || '...'}
+								</ListItem.Subtitle>
+							</ListItem.Content>
+							<ListItem.Chevron />
+						</ListItem>
+					);
+				})
+			)}
 		</View>
 	);
 };
