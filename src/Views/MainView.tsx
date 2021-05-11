@@ -42,7 +42,7 @@ const MainView = () => {
 		});
 	}, [dispatch]);
 
-	if (loading) return <Loading.FullScreen />;
+	if (loading) return <Loading fullScreen />;
 
 	return (
 		<NavigationContainer>

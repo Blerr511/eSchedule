@@ -1,5 +1,3 @@
-import FullScreen from './FullScreen';
-
-const Loading = {FullScreen};
+import Loading from './Loading';
 
 export default Loading;

@@ -21,7 +21,7 @@ const App = () => {
 		<SafeAreaProvider>
 			<Provider store={store}>
 				<ThemeProvider themes={themes} defaultTheme={'dark'}>
-					{ready ? <MainView /> : <Loading.FullScreen />}
+					{ready ? <MainView /> : <Loading fullScreen />}
 				</ThemeProvider>
 			</Provider>
 		</SafeAreaProvider>

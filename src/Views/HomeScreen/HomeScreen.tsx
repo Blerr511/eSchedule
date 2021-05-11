@@ -21,7 +21,7 @@ const HomeScreen = () => {
 
 	const role = useRole();
 
-	if (!role) return <Loading.FullScreen />;
+	if (!role) return <Loading fullScreen />;
 
 	return (
 		<Tab.Navigator
