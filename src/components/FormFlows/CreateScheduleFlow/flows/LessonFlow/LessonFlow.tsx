@@ -23,7 +23,7 @@ const LessonFlow = ({navigation, route}: LessonFlowProps) => {
 	const user = useSelector(selectors.auth.user) as IUser;
 
 	const handleSelectFactory = (uid: string) => () => {
-		console.log(uid);
+		navigation.push(ScheduleFlow.TIMING, {groupId, lessonId: uid});
 	};
 
 	useEffect(() => {

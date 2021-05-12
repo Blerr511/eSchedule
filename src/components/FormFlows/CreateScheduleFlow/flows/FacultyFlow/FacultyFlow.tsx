@@ -15,7 +15,7 @@ const FacultyFlow = ({navigation}: FacultyFlowProps) => {
 	const [faculties, setFaculties] = useState<IFaculty[] | null>(null);
 
 	const handleSelectFactory = (uid: string) => () => {
-		navigation.navigate(ScheduleFlow.GROUP, {facultyId: uid});
+		navigation.push(ScheduleFlow.GROUP, {facultyId: uid});
 	};
 
 	useEffect(() => {

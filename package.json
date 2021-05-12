@@ -12,6 +12,7 @@
 		"connect": "dotenv -e .env.local -- cross-var adb connect %DEVICE_IP%"
 	},
 	"dependencies": {
+		"@react-native-community/datetimepicker": "^3.4.7",
 		"@react-native-community/masked-view": "^0.1.10",
 		"@react-native-firebase/app": "^11.3.3",
 		"@react-native-firebase/auth": "^11.2.0",
@@ -26,6 +27,7 @@
 		"add": "^2.0.6",
 		"axios": "^0.21.1",
 		"fbjs": "^3.0.0",
+		"moment": "^2.29.1",
 		"react": "17.0.1",
 		"react-hook-form": "^7.3.5",
 		"react-native": "0.64.0",

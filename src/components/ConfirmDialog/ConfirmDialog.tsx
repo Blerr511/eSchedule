@@ -1,7 +1,7 @@
 import Button from 'components/Button';
 import {createStyleSheet} from 'hooks';
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text, TextStyle, View, ViewStyle} from 'react-native';
 import Modal, {ModalProps} from 'react-native-modal';
 
 const useModalStyles = createStyleSheet(theme => ({
@@ -41,6 +41,8 @@ export interface ConfirmDialogProps extends Partial<ModalProps> {
 	title?: string;
 	cancelButton?: boolean;
 	content?: string;
+	containerStyle?: ViewStyle;
+	titleStyle?: TextStyle;
 }
 
 const ConfirmDialog = ({
@@ -56,10 +58,12 @@ const ConfirmDialog = ({
 	onBackdropPress,
 	children,
 	content,
+	containerStyle,
+	titleStyle,
 	...rest
 }: ConfirmDialogProps) => {
 	const modalStyles = useModalStyles();
-	console.log(modalStyles);
+
 	return (
 		<Modal
 			useNativeDriver={useNativeDriver}
@@ -68,8 +72,8 @@ const ConfirmDialog = ({
 			onBackButtonPress={onBackButtonPress ?? onCancel}
 			onBackdropPress={onBackdropPress ?? onCancel}
 			{...rest}>
-			<View style={modalStyles.container}>
-				{!!title && <Text style={modalStyles.title}>{title}</Text>}
+			<View style={[modalStyles.container, containerStyle]}>
+				{!!title && <Text style={[modalStyles.title, titleStyle]}>{title}</Text>}
 				{!!content && <Text style={modalStyles.text}>{content}</Text>}
 				{children}
 				<View style={modalStyles.buttonsContainer}>

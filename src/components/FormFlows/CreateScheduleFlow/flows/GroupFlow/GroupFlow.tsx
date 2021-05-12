@@ -16,7 +16,7 @@ const GroupFlow = ({navigation, route}: GroupFlowProps) => {
 	const [groups, setGroups] = useState<IGroup[] | null>(null);
 
 	const handleSelectFactory = (uid: string) => () => {
-		navigation.navigate(ScheduleFlow.LESSON, {groupId: uid});
+		navigation.push(ScheduleFlow.LESSON, {groupId: uid});
 	};
 
 	useEffect(() => {

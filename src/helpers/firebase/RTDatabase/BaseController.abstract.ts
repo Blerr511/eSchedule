@@ -27,7 +27,7 @@ export abstract class BaseController<T extends DBItem = DBItem> extends Controll
 
 		$ref.on('value', handleValue);
 
-		return $ref.off('value', handleValue);
+		return () => $ref.off('value', handleValue);
 	}
 
 	public async find(filter?: (user: T) => boolean): Promise<T[]> {

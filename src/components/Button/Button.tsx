@@ -32,15 +32,21 @@ const useStyles = createStyleSheet(theme => ({
 		fontSize: theme.typography.fontSize.medium,
 		textAlign: 'center'
 	},
-	disabled: {opacity: 0.6}
+	disabled: {opacity: 0.6},
+	roundedBtn: {
+		borderRadius: 100,
+		paddingVertical: theme.spacing(1),
+		paddingHorizontal: theme.spacing(1)
+	}
 }));
 
 export interface ButtonProps extends TouchableOpacityProps {
-	text?: string;
+	text?: string | Element;
 	textStyles?: StyleProp<TextStyle>;
 	children?: ReactNode;
 	containerStyles?: StyleProp<ViewStyle>;
 	type?: 'filled' | 'text' | 'bordered';
+	rounded?: boolean;
 }
 
 const Button = ({
@@ -51,6 +57,7 @@ const Button = ({
 	type = 'filled',
 	children,
 	disabled,
+	rounded,
 	...props
 }: ButtonProps) => {
 	const styles = useStyles();
@@ -59,10 +66,16 @@ const Button = ({
 	return (
 		<View style={[disabled && styles.disabled, containerStyles]}>
 			<TouchableOpacity
-				style={[styles.container, filled && styles.filled, bordered && styles.bordered, style]}
+				style={[
+					styles.container,
+					filled && styles.filled,
+					bordered && styles.bordered,
+					rounded && styles.roundedBtn,
+					style
+				]}
 				disabled={disabled}
 				{...props}>
-				<Text style={[styles.text, filled && styles.filledText, textStyles]}>{text}</Text>
+				{!!text && <Text style={[styles.text, filled && styles.filledText, textStyles]}>{text}</Text>}
 				{children}
 			</TouchableOpacity>
 		</View>

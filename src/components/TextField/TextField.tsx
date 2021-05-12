@@ -2,10 +2,8 @@ import React from 'react';
 import {createStyleSheet} from 'hooks';
 import {Input, InputProps} from 'react-native-elements';
 
-export interface TextFieldProps extends InputProps {}
-
 type InputStyles = Pick<
-	TextFieldProps,
+	InputProps,
 	| 'style'
 	| 'errorStyle'
 	| 'inputStyle'
@@ -30,9 +28,20 @@ const useStyles = createStyleSheet<InputStyles>(theme => ({
 	}
 }));
 
-const TextField = ({...props}: TextFieldProps, ref: React.ForwardedRef<Input>) => {
+const TextField = (
+	{inputStyle, inputContainerStyle, labelStyle, ...props}: InputProps,
+	ref: React.ForwardedRef<Input>
+) => {
 	const styles = useStyles();
-	return <Input {...styles} {...props} ref={ref} />;
+	return (
+		<Input
+			inputStyle={[styles.inputStyle, inputStyle]}
+			inputContainerStyle={[styles.inputContainerStyle, inputContainerStyle]}
+			labelStyle={[styles.labelStyle, labelStyle]}
+			{...props}
+			ref={ref}
+		/>
+	);
 };
 
 export default React.forwardRef(TextField);
