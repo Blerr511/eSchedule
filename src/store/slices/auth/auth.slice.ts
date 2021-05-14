@@ -18,7 +18,7 @@ export interface IUser<R extends IRole = IRole> extends DBItem {
 	name?: string | null;
 	role: R;
 	displayName?: string;
-	settings?: IStudentSettings;
+	settings?: R extends 'student' ? IStudentSettings : null;
 }
 
 export interface RemindPasswordInitialStat
