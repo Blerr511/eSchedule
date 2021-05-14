@@ -1,15 +1,15 @@
 import {useContext, useMemo} from 'react';
-import {StyleSheet} from 'react-native';
+import {ImageStyle, TextStyle, ViewStyle} from 'react-native';
 import merge from 'ts-deepmerge';
 import themeContext from './context';
 import {ITheme, IThemeGetter} from './interfaces';
 
-type NamedStyles<T = any> = StyleSheet.NamedStyles<T>;
-// eslint-disable-next-line no-unused-vars
-type NamedStylesReturn<T = any> = (theme: ITheme & IThemeGetter) => NamedStyles<T>;
+type NamedStyles<T> = {[P in keyof T]: ViewStyle | TextStyle | ImageStyle}; // eslint-disable-next-line no-unused-vars
 
-export const createStyleSheet = <T>(
-	styles: NamedStyles<T> | NamedStylesReturn<T>
+type ThemeFactory<T> = (theme: ITheme & IThemeGetter) => T | NamedStyles<T>;
+
+export const createStyleSheet = <T extends NamedStyles<T> = NamedStyles<unknown>>(
+	styles: T | NamedStyles<T> | ThemeFactory<T>
 	// eslint-disable-next-line no-unused-vars
 ): ((extraTheme?: ITheme & IThemeGetter) => NamedStyles<T>) => {
 	const useTheme = (extraTheme?: ITheme & IThemeGetter) => {
