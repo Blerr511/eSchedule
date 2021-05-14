@@ -1,24 +1,22 @@
 import {useContext, useMemo} from 'react';
-import {ImageStyle, TextStyle, ViewStyle} from 'react-native';
+import {ImageStyle, StyleSheet, TextStyle, ViewStyle} from 'react-native';
 import merge from 'ts-deepmerge';
 import themeContext from './context';
 import {ITheme, IThemeGetter} from './interfaces';
 
-type NamedStyles<T> = {[P in keyof T]: ViewStyle | TextStyle | ImageStyle}; // eslint-disable-next-line no-unused-vars
+type NamedStyles<T> = {[P in keyof T]: ViewStyle | TextStyle | ImageStyle};
 
 type ThemeFactory<T> = (theme: ITheme & IThemeGetter) => T | NamedStyles<T>;
 
 export const createStyleSheet = <T extends NamedStyles<T> = NamedStyles<unknown>>(
-	styles: T | NamedStyles<T> | ThemeFactory<T>
-	// eslint-disable-next-line no-unused-vars
-): ((extraTheme?: ITheme & IThemeGetter) => NamedStyles<T>) => {
-	const useTheme = (extraTheme?: ITheme & IThemeGetter) => {
+	styles: T | NamedStyles<T> | ThemeFactory<T> | ThemeFactory<NamedStyles<T>>
+): (() => T) => {
+	const useTheme = () => {
 		const ctx = useContext(themeContext);
 		return useMemo(() => {
-			if (typeof styles === 'function')
-				return styles(extraTheme ? merge(ctx.theme, extraTheme) : ctx.theme);
+			if (typeof styles === 'function') return styles(ctx.theme);
 			else return styles;
-		}, [ctx.theme, extraTheme]);
+		}, [ctx.theme]);
 	};
 
 	if (typeof styles === 'object') return () => styles;

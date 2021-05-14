@@ -1,14 +1,23 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {DBItem} from 'helpers/firebase/RTDatabase/BaseController.abstract';
+import {IFaculty} from 'helpers/firebase/RTDatabase/controllers/Faculty';
+import {IGroup} from 'helpers/firebase/RTDatabase/controllers/GroupController.ts';
 import {BaseRequestReducer} from 'types';
 import {remindPassword, signIn, signUp} from '../../actions/auth';
 
 export type IRole = 'student' | 'lecturer' | 'admin';
 
-export interface IUser extends DBItem {
-	email: string | null;
+export interface IStudentSettings {
+	facultyId: IFaculty['uid'];
+	groupId: IGroup['uid'];
+}
+
+export interface IUser<R extends IRole = IRole> extends DBItem {
+	email: string;
 	name?: string | null;
-	role: IRole;
+	role: R;
+	displayName?: string;
+	settings?: IStudentSettings;
 }
 
 export interface RemindPasswordInitialStat

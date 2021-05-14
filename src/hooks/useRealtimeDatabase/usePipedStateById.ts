@@ -3,16 +3,18 @@ import {useEffect, useState} from 'react';
 
 export const usePipedStateById = <T extends DBItem = DBItem>(
 	controller: BaseController<T>,
-	id: string
+	id?: string
 ): T | null | undefined => {
 	const [state, setState] = useState<T | null>();
 
 	useEffect(() => {
-		const unsubscribe = controller.pipeById(id, setState);
+		if (id) {
+			const unsubscribe = controller.pipeById(id, setState);
 
-		return () => {
-			unsubscribe();
-		};
+			return () => {
+				unsubscribe();
+			};
+		}
 	}, [controller, id]);
 
 	return state;
