@@ -9,7 +9,6 @@ import {createStyleSheet, useTheme} from 'hooks';
 import moment from 'moment';
 import React from 'react';
 import {Linking, ToastAndroid, View} from 'react-native';
-import {CheckBox} from 'react-native-elements';
 
 export interface ConfirmChangesDialogProps<T extends boolean = boolean> {
 	isVisible: boolean;
@@ -49,7 +48,9 @@ const useStyles = createStyleSheet(theme => ({
 		paddingVertical: theme.spacing(1),
 		paddingHorizontal: theme.spacing(2),
 		borderLeftWidth: 1,
-		borderLeftColor: theme.pallet.border.secondary
+		borderLeftColor: theme.pallet.border.secondary,
+		display: 'flex',
+		justifyContent: 'center'
 	},
 	col2: {
 		flex: 2,
@@ -81,7 +82,6 @@ const ConfirmChangesDialog = ({
 	description
 }: ConfirmChangesDialogProps) => {
 	const styles = useStyles();
-	const theme = useTheme();
 
 	return (
 		<ConfirmDialog
@@ -110,22 +110,7 @@ const ConfirmChangesDialog = ({
 				</View>
 				<View style={styles.row}>
 					<View style={styles.col}>
-						<Typography style={styles.text}>Once</Typography>
-					</View>
-					<View style={[styles.col, styles.col2]}>
-						<CheckBox
-							checked={singleTime}
-							containerStyle={{
-								margin: 0,
-								padding: 0
-							}}
-							checkedColor={theme.pallet.primary}
-						/>
-					</View>
-				</View>
-				<View style={styles.row}>
-					<View style={styles.col}>
-						<Typography style={styles.text}>At </Typography>
+						<Typography style={styles.text}>{singleTime ? 'At' : 'Every'} </Typography>
 					</View>
 					<View style={[styles.col, styles.col2]}>
 						{singleTime ? (
@@ -139,6 +124,13 @@ const ConfirmChangesDialog = ({
 								}}
 							/>
 						)}
+					</View>
+				</View>
+				<View style={styles.row}>
+					<View style={styles.col}>
+						<Typography style={styles.text}>Time</Typography>
+					</View>
+					<View style={[styles.col, styles.col2]}>
 						<Button
 							text={`${moment(time).format(DEFAULT_TIME_FORMAT)} PM`}
 							style={{marginTop: 2}}
