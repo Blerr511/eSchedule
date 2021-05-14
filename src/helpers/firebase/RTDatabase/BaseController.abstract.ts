@@ -14,7 +14,7 @@ export abstract class BaseController<T extends DBItem = DBItem> extends Controll
 			$ref.once('value', res, rej)
 		);
 		const value: T | null = snap.val();
-		if (!value) throw new Error('User not found');
+		if (!value) throw new Error('Data not found');
 		return value;
 	}
 

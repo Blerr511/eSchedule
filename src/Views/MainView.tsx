@@ -26,7 +26,7 @@ const MainView = () => {
 		return firebase.auth().onAuthStateChanged(async user => {
 			const db = new RTDatabase();
 			if (user?.emailVerified) {
-				const userData = await db.users.getUser(user?.uid);
+				const userData = await db.users.findById(user?.uid);
 
 				dispatch(
 					authSlice.actions.autStateChange({
