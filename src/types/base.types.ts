@@ -9,3 +9,7 @@ export interface BaseMeta<K extends string = any> {
 	code: K;
 	message: string;
 }
+
+export type DeepPartial<T> = {
+	[P in keyof T]?: DeepPartial<T[P]>;
+};

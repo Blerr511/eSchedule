@@ -30,7 +30,12 @@ const MainView = () => {
 
 				dispatch(
 					authSlice.actions.autStateChange({
-						user: {email: user.email, name: user.displayName, uid: user.uid, role: userData.role}
+						user: {
+							email: String(user.email),
+							name: user.displayName,
+							uid: user.uid,
+							role: userData.role
+						}
 					})
 				);
 			} else

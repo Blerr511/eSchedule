@@ -10,6 +10,7 @@ export type IRole = 'student' | 'lecturer' | 'admin';
 export interface IStudentSettings {
 	facultyId: IFaculty['uid'];
 	groupId: IGroup['uid'];
+	pushNotifications: boolean;
 }
 
 export interface IUser<R extends IRole = IRole> extends DBItem {

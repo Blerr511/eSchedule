@@ -1,6 +1,8 @@
 import {FirebaseDatabaseTypes} from '@react-native-firebase/database';
 import {Controller} from './Controller.abstract';
 import uuid from 'react-native-uuid';
+import {DeepPartial} from 'react-hook-form';
+import merge from 'ts-deepmerge';
 
 export interface DBItem {
 	uid: string;
@@ -46,6 +48,7 @@ export abstract class BaseController<T extends DBItem = DBItem> extends Controll
 
 		return res;
 	}
+
 	public pipe(cb: (users: T[]) => void, filter?: (user: T) => boolean) {
 		const $ref = this.getRef();
 
@@ -63,10 +66,15 @@ export abstract class BaseController<T extends DBItem = DBItem> extends Controll
 
 		return () => $ref.off('value', handleValue);
 	}
+
 	public async create(user: Omit<T, 'uid'> & Partial<Pick<T, 'uid'>>): Promise<T> {
 		const uid = user.uid || uuid.v4('users').toString();
 		const $ref = this.getRef(uid);
 		await $ref.set({...user, uid});
 		return this.findById(uid);
+	}
+
+	public ref(...rest: string[]) {
+		return this.getRef(...rest);
 	}
 }
