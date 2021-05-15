@@ -15,7 +15,7 @@ const App = () => {
 
 	useEffect(() => {
 		app.init().then(() => setReady(true));
-	});
+	}, []);
 
 	return (
 		<SafeAreaProvider>
