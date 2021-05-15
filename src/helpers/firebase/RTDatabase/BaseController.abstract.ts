@@ -1,14 +1,13 @@
 import {FirebaseDatabaseTypes} from '@react-native-firebase/database';
 import {Controller} from './Controller.abstract';
 import uuid from 'react-native-uuid';
-import {DeepPartial} from 'react-hook-form';
-import merge from 'ts-deepmerge';
 
 export interface DBItem {
 	uid: string;
+	createdAt: number;
 }
 
-export type DBItemPayload<T extends DBItem> = Omit<T, 'uid'> & Partial<DBItem>;
+export type DBItemPayload<T extends DBItem> = Omit<T, 'uid' | 'createdAt'> & Partial<DBItem>;
 
 export abstract class BaseController<T extends DBItem = DBItem> extends Controller {
 	public async findById(userId: string): Promise<T> {
@@ -73,7 +72,7 @@ export abstract class BaseController<T extends DBItem = DBItem> extends Controll
 	public async create(user: DBItemPayload<T>): Promise<T> {
 		const uid = user.uid || uuid.v4('users').toString();
 		const $ref = this.getRef(uid);
-		await $ref.set({...user, uid});
+		await $ref.set({...user, uid, createdAt: Date.now()});
 		return this.findById(uid);
 	}
 
