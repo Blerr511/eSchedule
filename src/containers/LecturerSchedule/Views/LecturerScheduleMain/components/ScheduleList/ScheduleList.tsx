@@ -1,23 +1,18 @@
-import {firebase} from '@react-native-firebase/auth';
 import Typography from 'components/Typography';
 import {RTDatabase} from 'helpers/firebase';
-import {createStyleSheet, usePipedStateById, useTheme} from 'hooks';
+import {createStyleSheet, usePipedStateById} from 'hooks';
 import moment from 'moment';
 import React from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
-import {Badge, Divider, ListItem} from 'react-native-elements';
-import {Card} from 'react-native-paper';
+import {FlatList, View} from 'react-native';
+import {ListItem} from 'react-native-elements';
 import {ScheduleListItem} from '../../LecturerScheduleMain';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Header from 'components/Header';
 
 export interface ScheduleList {
 	schedules: ScheduleListItem[];
 }
 
 const useStyles = createStyleSheet(theme => ({
-	headerCard: {
-		padding: theme.spacing(1)
-	},
 	listContentWrapper: {
 		display: 'flex',
 		flex: 1,
@@ -105,20 +100,10 @@ const RenderItem = ({schedule}: {schedule: ScheduleListItem}) => {
 const stickyHeader = [0];
 
 const ScheduleList = ({schedules}: ScheduleList) => {
-	const styles = useStyles();
 	return (
 		<FlatList
 			stickyHeaderIndices={stickyHeader}
-			ListHeaderComponent={
-				<View>
-					<Card style={styles.headerCard}>
-						<Typography h1 alignCenter>
-							Schedule list
-						</Typography>
-					</Card>
-					<Divider />
-				</View>
-			}
+			ListHeaderComponent={<Header>Schedule list</Header>}
 			style={{flex: 1}}
 			data={schedules}
 			keyExtractor={sc => String(sc.uid) + String(sc.triggerDate)}

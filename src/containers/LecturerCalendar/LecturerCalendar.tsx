@@ -1,6 +1,7 @@
+import Header from 'components/Header';
 import {createStyleSheet} from 'hooks';
 import React from 'react';
-import {Text, View} from 'react-native';
+import {KeyboardAvoidingView} from 'react-native';
 import {Calendar} from 'react-native-calendars';
 
 const useStyles = createStyleSheet(theme => ({
@@ -12,10 +13,10 @@ const useStyles = createStyleSheet(theme => ({
 const LecturerCalendar = () => {
 	const styles = useStyles();
 	return (
-		<View style={styles.container}>
-			<Text>Lecturer Calendar</Text>
+		<KeyboardAvoidingView style={styles.container}>
+			<Header>Lecturer Calendar</Header>
 			<Calendar />
-		</View>
+		</KeyboardAvoidingView>
 	);
 };
 
