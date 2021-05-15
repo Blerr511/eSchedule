@@ -1,37 +1,23 @@
 import {NavigationProp, RouteProp} from '@react-navigation/core';
 import Typography from 'components/Typography';
 import WeekDaySelect from 'components/WeekDaySelect';
-import {
-	createStyleSheet,
-	useControlledInput,
-	usePipedState,
-	usePipedStateById,
-	useRealTimeData,
-	useTheme
-} from 'hooks';
+import {createStyleSheet, useControlledInput, usePipedStateById, useTheme} from 'hooks';
 import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react';
-import {
-	GestureResponderEvent,
-	KeyboardAvoidingView,
-	ScrollView,
-	Text,
-	TouchableOpacity,
-	View
-} from 'react-native';
+import {GestureResponderEvent, ScrollView, ToastAndroid, View} from 'react-native';
 import DatePicker from '@react-native-community/datetimepicker';
-import {CheckBox, ListItem} from 'react-native-elements';
+import {CheckBox} from 'react-native-elements';
 import moment from 'moment';
 import {ScheduleFlow, ScheduleFlowParamList} from '../types';
 import Button from 'components/Button';
-import {DEFAULT_DATE_FORMAT} from 'constants/dateFormats';
 import TextField from 'components/TextField';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {WeekDay} from 'components/WeekDaySelect/WeekDaySelect';
-import ConfirmDialog from 'components/ConfirmDialog';
-import app, {RTDatabase} from 'helpers/firebase';
-import {IGroup} from 'helpers/firebase/RTDatabase/controllers/GroupController.ts';
-import {ILesson} from 'helpers/firebase/RTDatabase/controllers/LessonController';
+import {RTDatabase} from 'helpers/firebase';
 import ConfirmChangesDialog from './components/ConfirmChangesDialog';
+import {ISchedule} from 'helpers/firebase/RTDatabase/controllers/ScheduleController';
+import {DBItemPayload} from 'helpers/firebase/RTDatabase/BaseController.abstract';
+import {useSelector} from 'react-redux';
+import {auth} from 'store/selectors';
 
 const useStyles = createStyleSheet(theme => ({
 	container: {
@@ -118,6 +104,8 @@ const lessonController = db.lesson;
 const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 	const {groupId, lessonId} = route.params;
 
+	const user = useSelector(auth.user);
+
 	const group = usePipedStateById(groupController, groupId);
 	const lesson = usePipedStateById(lessonController, lessonId);
 
@@ -130,6 +118,7 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 	const [time, setTime] = useState(new Date());
 	const [link, onLinkChange] = useControlledInput('');
 	const [description, onDescriptionChange] = useControlledInput('');
+	const [isExam, setIsExam] = useState(false);
 
 	const [showPicker, setShowPicker] = useState(false);
 
@@ -193,6 +182,36 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 		setSingleTime(v => !v);
 	}, []);
 
+	const handleToggleIsExam = useCallback(() => {
+		setIsExam(isExam => !isExam);
+	}, []);
+
+	const handleSaveSchedule = () => {
+		if (group && lesson && user) {
+			const schedule: DBItemPayload<ISchedule> = {
+				lecturerId: user.uid,
+				groupId: group.uid,
+				lessonId: lesson.uid,
+				date: moment(date).unix(),
+				time: moment(date).unix(),
+				singleTime,
+				weekDays: weekDays?.map(day => day.value),
+				link,
+				description,
+				isExam
+			};
+			new RTDatabase().schedule
+				.create(schedule)
+				.then(() => {
+					ToastAndroid.show('Schedule success saved', 3000);
+					navigation.navigate('LecturerScheduleMain');
+				})
+				.finally(() => {
+					setShowAcceptDialog(false);
+				});
+		}
+	};
+
 	useLayoutEffect(() => {
 		const HeaderAcceptButton = () => {
 			return <AcceptBtn onPress={handleShowAcceptDialog} />;
@@ -207,8 +226,9 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 				group={group}
 				lesson={lesson}
 				onCancel={handleCloseAcceptDialog}
-				onOk={console.log}
+				onOk={handleSaveSchedule}
 				singleTime={singleTime}
+				isExam={isExam}
 				date={date}
 				time={time}
 				weekDays={weekDays}
@@ -262,6 +282,19 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 							}
 							textStyles={styles.time}
 							onPress={handleShowTimePicker}></Button>
+					</View>
+					<View style={styles.checkboxWrapper}>
+						{singleTime && (
+							<CheckBox
+								checkedColor={theme.pallet.primary}
+								center
+								title="Exam"
+								iconRight
+								containerStyle={styles.checkboxContainer}
+								checked={isExam}
+								onPress={handleToggleIsExam}
+							/>
+						)}
 					</View>
 					<View style={styles.sectorContainer}>
 						<TextField

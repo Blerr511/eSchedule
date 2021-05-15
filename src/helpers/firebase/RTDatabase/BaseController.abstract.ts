@@ -8,6 +8,8 @@ export interface DBItem {
 	uid: string;
 }
 
+export type DBItemPayload<T extends DBItem> = Omit<T, 'uid'> & Partial<DBItem>;
+
 export abstract class BaseController<T extends DBItem = DBItem> extends Controller {
 	public async findById(userId: string): Promise<T> {
 		const $ref = this.getRef(userId);
@@ -59,6 +61,7 @@ export abstract class BaseController<T extends DBItem = DBItem> extends Controll
 				if (!filter || filter(val)) res.push(val);
 				return undefined;
 			});
+
 			cb(res);
 		};
 
@@ -67,7 +70,7 @@ export abstract class BaseController<T extends DBItem = DBItem> extends Controll
 		return () => $ref.off('value', handleValue);
 	}
 
-	public async create(user: Omit<T, 'uid'> & Partial<Pick<T, 'uid'>>): Promise<T> {
+	public async create(user: DBItemPayload<T>): Promise<T> {
 		const uid = user.uid || uuid.v4('users').toString();
 		const $ref = this.getRef(uid);
 		await $ref.set({...user, uid});

@@ -2,7 +2,7 @@ import app from '../app';
 import {FacultyController} from './controllers/Faculty';
 import {GroupController} from './controllers/GroupController.ts';
 import {LessonController} from './controllers/LessonController';
-import {TimingController} from './controllers/TimingController';
+import {ScheduleController} from './controllers/ScheduleController';
 import {UsersController} from './controllers/UsersController';
 
 export class RTDatabase {
@@ -27,7 +27,7 @@ export class RTDatabase {
 		return new LessonController(this.db);
 	}
 
-	public get timing() {
-		return new TimingController(this.db);
+	public get schedule() {
+		return new ScheduleController(this.db);
 	}
 }

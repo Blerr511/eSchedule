@@ -7,7 +7,8 @@ export const dark = createTheme({
 			secondary: '#ffffff',
 			tertiary: '#4B4B4C'
 		},
-		primary: '#2ba97a'
+		primary: '#2ba97a',
+		secondary: '#21805d'
 	},
 	typography: {
 		color: {

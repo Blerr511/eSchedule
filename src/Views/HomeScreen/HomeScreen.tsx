@@ -13,8 +13,6 @@ const useStyles = createStyleSheet(theme => ({
 
 const Tab = createMaterialBottomTabNavigator();
 
-const T = () => null;
-
 const HomeScreen = () => {
 	const styles = useStyles();
 	const theme = useTheme();

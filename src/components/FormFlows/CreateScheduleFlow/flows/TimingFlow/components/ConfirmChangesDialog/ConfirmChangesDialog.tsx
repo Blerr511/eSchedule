@@ -22,6 +22,7 @@ export interface ConfirmChangesDialogProps<T extends boolean = boolean> {
 	weekDays?: WeekDay[];
 	link?: string;
 	description?: string;
+	isExam?: boolean;
 }
 
 const useStyles = createStyleSheet(theme => ({
@@ -79,7 +80,8 @@ const ConfirmChangesDialog = ({
 	time,
 	weekDays,
 	link,
-	description
+	description,
+	isExam
 }: ConfirmChangesDialogProps) => {
 	const styles = useStyles();
 
@@ -138,6 +140,18 @@ const ConfirmChangesDialog = ({
 						/>
 					</View>
 				</View>
+				{singleTime && isExam && (
+					<View style={styles.row}>
+						<View style={[styles.col, {display: 'flex', justifyContent: 'center'}]}>
+							<Typography style={styles.text}>Exam</Typography>
+						</View>
+						<View style={[styles.col, styles.col2]}>
+							<Typography style={[styles.text, {overflow: 'hidden'}]} numberOfLines={4}>
+								{'Yes'}
+							</Typography>
+						</View>
+					</View>
+				)}
 				{!!link && (
 					<View style={styles.row}>
 						<View style={styles.col}>

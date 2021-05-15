@@ -1,11 +1,8 @@
+import {DBItem} from 'helpers/firebase/RTDatabase/BaseController.abstract';
 import {useCallback, useEffect, useRef, useState} from 'react';
 import {useDatabaseListener, DataListenerCb} from './useDatabaseListener';
 
-export interface DataBaseItem {
-	[key: string]: string | number | boolean | null | undefined | DataBaseItem;
-}
-
-export const useRealTimeData = <T extends DataBaseItem = DataBaseItem>(
+export const useRealTimeData = <T extends DBItem = DBItem>(
 	ref: string
 ): [T | null, boolean, (data: T) => Promise<void>] => {
 	const $mounted = useRef(true);
