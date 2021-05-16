@@ -43,6 +43,11 @@ const LecturerScheduleMain = ({navigation}: LecturerScheduleMainProps) => {
 					let res: ScheduleListItem[] = [];
 
 					schedules.forEach(sc => {
+						if (sc.singleTime && sc.date && sc.date < Date.now()) {
+							new RTDatabase().schedule.deleteById(sc.uid);
+							return false;
+						}
+
 						if (sc.singleTime) res.push({...sc, triggerDate: sc.date as number});
 						else {
 							sc.weekDays?.map(wkd => {

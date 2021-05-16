@@ -40,6 +40,7 @@ export interface ConfirmDialogProps extends Partial<ModalProps> {
 	cancelText?: string;
 	title?: string;
 	cancelButton?: boolean;
+	okButton?: boolean;
 	content?: string;
 	containerStyle?: ViewStyle;
 	titleStyle?: TextStyle;
@@ -47,6 +48,7 @@ export interface ConfirmDialogProps extends Partial<ModalProps> {
 
 const ConfirmDialog = ({
 	cancelButton = true,
+	okButton = true,
 	okText = 'OK',
 	cancelText = 'Cancel',
 	onCancel,
@@ -85,7 +87,9 @@ const ConfirmDialog = ({
 							onPress={onCancel}
 						/>
 					)}
-					<Button text={okText} type="bordered" style={modalStyles.okBtn} onPress={onOk} />
+					{okButton && (
+						<Button text={okText} type="bordered" style={modalStyles.okBtn} onPress={onOk} />
+					)}
 				</View>
 			</View>
 		</Modal>

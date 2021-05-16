@@ -76,6 +76,11 @@ export abstract class BaseController<T extends DBItem = DBItem> extends Controll
 		return this.findById(uid);
 	}
 
+	public async deleteById(id: DBItem['uid']): Promise<void> {
+		const $ref = this.getRef(id);
+		await $ref.remove();
+	}
+
 	public ref(...rest: string[]) {
 		return this.getRef(...rest);
 	}
