@@ -27,4 +27,10 @@ export const connectFirebase = (store: Store) => {
 	messaging().onMessage(message => {
 		store.dispatch(notificationReceived(message));
 	});
+
+	messaging()
+		.getInitialNotification()
+		.then(message => {
+			if (message) store.dispatch(notificationReceived(message));
+		});
 };
