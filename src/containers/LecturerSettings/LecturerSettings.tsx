@@ -8,25 +8,23 @@ import {RTDatabase} from 'helpers/firebase';
 import {KeyboardAvoidingView, ScrollView, View} from 'react-native';
 import Loading from 'components/Loading';
 import Typography from 'components/Typography';
-import GroupItem from './components/GroupItem';
-import FacultyItem from './components/FacultyItem';
-import PushNotificationsItem from 'components/PushNotificationsItem';
 import ProfileHeader from 'components/ProfileHeader';
+import PushNotificationsItem from 'components/PushNotificationsItem';
 import LogoutButton from 'components/LogoutButton';
 
 const userController = new RTDatabase().users;
 
-const StudentSettings = () => {
+const LecturerSettings = () => {
 	const storeUser = useSelector(auth.user);
 
-	const user = usePipedStateById(userController, storeUser?.uid) as IUser<'student'>;
+	const user = usePipedStateById(userController, storeUser?.uid) as IUser<'lecturer'>;
 
 	return (
 		<KeyboardAvoidingView style={{flex: 1}}>
 			<ScrollView>
 				<Card>
 					<Card.Title>
-						<Typography h4>Student Profile Settings</Typography>
+						<Typography h4>Lecturer Profile Settings</Typography>
 					</Card.Title>
 					<Card.Divider />
 					{!user ? (
@@ -34,8 +32,6 @@ const StudentSettings = () => {
 					) : (
 						<View>
 							<ProfileHeader user={user} />
-							<FacultyItem user={user} />
-							<GroupItem user={user} />
 							<PushNotificationsItem user={user} />
 							<LogoutButton />
 						</View>
@@ -46,4 +42,4 @@ const StudentSettings = () => {
 	);
 };
 
-export default StudentSettings;
+export default LecturerSettings;

@@ -18,6 +18,7 @@ import {ISchedule} from 'helpers/firebase/RTDatabase/controllers/ScheduleControl
 import {DBItemPayload} from 'helpers/firebase/RTDatabase/BaseController.abstract';
 import {useSelector} from 'react-redux';
 import {auth} from 'store/selectors';
+import {DEFAULT_TIME_FORMAT} from 'constants/dateFormats';
 
 const useStyles = createStyleSheet(theme => ({
 	container: {
@@ -193,13 +194,14 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 				groupId: group.uid,
 				lessonId: lesson.uid,
 				date: moment(date).unix(),
-				time: moment(date).unix(),
+				time: moment(time).format(DEFAULT_TIME_FORMAT),
 				singleTime,
 				weekDays: weekDays?.map(day => day.value),
 				link,
 				description,
 				isExam
 			};
+
 			new RTDatabase().schedule
 				.create(schedule)
 				.then(() => {

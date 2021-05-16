@@ -1,23 +1,37 @@
 import {RouteProp} from '@react-navigation/core';
 import {StackNavigationProp} from '@react-navigation/stack';
 import Loading from 'components/Loading';
+import {StepperFlow, StepperFlowParams} from 'containers/StudentInitStepper/types';
 import {RTDatabase} from 'helpers/firebase';
 import {IGroup} from 'helpers/firebase/RTDatabase/controllers/GroupController.ts';
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import {ToastAndroid, View} from 'react-native';
 import {ListItem} from 'react-native-elements';
-import {ScheduleFlow, ScheduleFlowParamList} from '../types';
+import {useSelector} from 'react-redux';
+import {auth} from 'store/selectors';
+import {RootState} from 'store/store';
+import {IStudentSettings} from 'store/slices/auth/auth.slice';
 
 export interface GroupFlowProps {
-	navigation: StackNavigationProp<ScheduleFlowParamList, ScheduleFlow.GROUP>;
-	route: RouteProp<ScheduleFlowParamList, ScheduleFlow.GROUP>;
+	navigation: StackNavigationProp<StepperFlowParams, StepperFlow.GROUP>;
+	route: RouteProp<StepperFlowParams, StepperFlow.GROUP>;
 }
 
-const GroupFlow = ({navigation, route}: GroupFlowProps) => {
+const GroupFlow = ({route}: GroupFlowProps) => {
 	const [groups, setGroups] = useState<IGroup[] | null>(null);
 
+	const userId = useSelector((state: RootState) => auth.user(state)?.uid) as string;
+
 	const handleSelectFactory = (uid: string) => () => {
-		navigation.push(ScheduleFlow.LESSON, {groupId: uid});
+		const $ref = new RTDatabase().users.ref(userId, 'settings');
+		const settings: Partial<IStudentSettings> = {
+			facultyId: route.params.facultyId,
+			groupId: uid,
+			initialized: true
+		};
+		$ref.update(settings).then(() => {
+			ToastAndroid.show('Settings saved !', 3000);
+		});
 	};
 
 	useEffect(() => {

@@ -37,7 +37,7 @@ export const signUp = createAsyncThunk<
 			return rejectWithValue({code: 'wrong-confirm-password', message: 'Invalid password confirm'});
 
 		const res = await services.Auth.SignUp({email, password});
-		await new RTDatabase().users.createUser({email, uid: res.uid, role: 'student'});
+		await new RTDatabase().users.create({email, uid: res.uid, role: 'student'});
 		return {email};
 	} catch (error) {
 		return rejectWithValue(error?.userInfo);

@@ -11,6 +11,7 @@ export interface IStudentSettings {
 	facultyId: IFaculty['uid'];
 	groupId: IGroup['uid'];
 	pushNotifications: boolean;
+	initialized?: boolean;
 }
 
 export interface IUser<R extends IRole = IRole> extends DBItem {
@@ -113,7 +114,7 @@ const authSlice = createSlice({
 
 			if (user) {
 				state.signIn.loggedIn = true;
-				state.signIn.user = {email: user.email, name: user.name, uid: user.uid, role: user.role};
+				state.signIn.user = user;
 			} else {
 				state.signIn.loggedIn = false;
 				state.signIn.user = null;

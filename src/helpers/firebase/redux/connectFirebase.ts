@@ -1,5 +1,7 @@
 import {firebase} from '@react-native-firebase/database';
+import messaging from '@react-native-firebase/messaging';
 import {Store} from 'redux';
+import {notificationReceived} from 'store/actions/firebase';
 import authSlice from 'store/slices/auth';
 import {RTDatabase} from '../RTDatabase';
 
@@ -11,12 +13,7 @@ export const connectFirebase = (store: Store) => {
 
 			store.dispatch(
 				authSlice.actions.autStateChange({
-					user: {
-						email: String(user.email),
-						name: user.displayName,
-						uid: user.uid,
-						role: userData.role
-					}
+					user: userData
 				})
 			);
 		} else
@@ -25,5 +22,9 @@ export const connectFirebase = (store: Store) => {
 					user: null
 				})
 			);
+	});
+
+	messaging().onMessage(message => {
+		store.dispatch(notificationReceived(message));
 	});
 };

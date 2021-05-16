@@ -1,6 +1,6 @@
+import React from 'react';
 import Typography from 'components/Typography';
 import {createStyleSheet} from 'hooks';
-import React from 'react';
 import {ListItem, Avatar} from 'react-native-elements';
 import {IUser} from 'store/slices/auth';
 

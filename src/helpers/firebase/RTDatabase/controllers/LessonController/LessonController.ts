@@ -3,7 +3,6 @@ import {BaseController, DBItem} from '../../BaseController.abstract';
 export interface ILesson extends DBItem {
 	title: string;
 	description?: string;
-	uri?: string;
 	lecturerId: string;
 	groupId: string;
 }

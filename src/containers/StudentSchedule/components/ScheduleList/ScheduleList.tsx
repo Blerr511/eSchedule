@@ -5,8 +5,8 @@ import moment from 'moment';
 import React from 'react';
 import {FlatList, Linking, Pressable, ToastAndroid, View} from 'react-native';
 import {ListItem} from 'react-native-elements';
-import {ScheduleListItem} from '../../LecturerScheduleMain';
 import Header from 'components/Header';
+import {ScheduleListItem} from 'containers/StudentSchedule/StudentSchedule';
 
 export interface ScheduleList {
 	schedules: ScheduleListItem[];
@@ -56,9 +56,8 @@ const useStyles = createStyleSheet(theme => ({
 	}
 }));
 
-const groupController = new RTDatabase().group;
 const lessonController = new RTDatabase().lesson;
-const facultyController = new RTDatabase().faculty;
+const userController = new RTDatabase().users;
 
 const RenderItem = ({schedule}: {schedule: ScheduleListItem}) => {
 	const styles = useStyles();
@@ -67,9 +66,14 @@ const RenderItem = ({schedule}: {schedule: ScheduleListItem}) => {
 	const weekDay = triggerDate.format('ddd');
 	const date = triggerDate.date();
 
-	const group = usePipedStateById(groupController, schedule.groupId);
 	const lesson = usePipedStateById(lessonController, schedule.lessonId);
-	const faculty = usePipedStateById(facultyController, group?.facultyId);
+
+	const lecturer = usePipedStateById(userController, schedule.lecturerId);
+
+	const handleOpenLink = () =>
+		Linking.openURL(String(schedule?.link)).catch(err => {
+			ToastAndroid.show(err?.message || 'Failed to open link', 3000);
+		});
 
 	return (
 		<ListItem>
@@ -90,14 +94,7 @@ const RenderItem = ({schedule}: {schedule: ScheduleListItem}) => {
 			</View>
 			<Pressable
 				style={styles.listContentWrapper}
-				onPress={
-					schedule?.link
-						? () =>
-								Linking.openURL(String(schedule?.link)).catch(err => {
-									ToastAndroid.show(err?.message || 'Failed to open link', 3000);
-								})
-						: undefined
-				}>
+				onPress={schedule?.link ? handleOpenLink : undefined}>
 				<View style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
 					<Typography
 						style={[styles.lessonText, !!schedule?.link && styles.link]}
@@ -108,9 +105,9 @@ const RenderItem = ({schedule}: {schedule: ScheduleListItem}) => {
 						{schedule.time}
 					</Typography>
 				</View>
-				<Typography style={styles.lessonText} secondary numberOfLines={1}>{`${group?.title || ''} - ${
-					faculty?.title || ''
-				}`}</Typography>
+				<Typography style={styles.lessonText} secondary numberOfLines={1}>
+					{lecturer?.displayName || lecturer?.name || lecturer?.email}
+				</Typography>
 			</Pressable>
 		</ListItem>
 	);

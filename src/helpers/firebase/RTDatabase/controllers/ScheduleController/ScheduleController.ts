@@ -9,7 +9,7 @@ export interface ISchedule<S extends boolean = boolean> extends DBItem {
 	groupId: IGroup['uid'];
 	singleTime: S;
 	date: S extends true ? number : undefined;
-	time: number;
+	time: string;
 	weekDays: S extends false ? number[] : undefined;
 	link?: string;
 	description?: string;

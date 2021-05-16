@@ -13,6 +13,8 @@ import {IUser} from 'store/slices/auth';
 import {getNextByWeekDay} from 'helpers/date/getNextByWeekday';
 import Loading from 'components/Loading';
 import ScheduleList from './components/ScheduleList';
+import moment from 'moment';
+import {DEFAULT_TIME_FORMAT} from 'constants/dateFormats';
 
 const useStyles = createStyleSheet(theme => ({
 	container: {

@@ -29,7 +29,6 @@ const LessonFlow = ({navigation, route}: LessonFlowProps) => {
 
 	useEffect(() => {
 		return new RTDatabase().lesson.pipe(setLessons, lesson => {
-			console.log(lesson.groupId, groupId, lesson.lecturerId, user?.uid);
 			return lesson.groupId === groupId && lesson.lecturerId === user?.uid;
 		});
 	}, [groupId, user?.uid]);
