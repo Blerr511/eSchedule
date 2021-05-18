@@ -19,6 +19,7 @@ import {DBItemPayload} from 'helpers/firebase/RTDatabase/BaseController.abstract
 import {useSelector} from 'react-redux';
 import {auth} from 'store/selectors';
 import {DEFAULT_TIME_FORMAT} from 'constants/dateFormats';
+import {createSchedule} from 'services/schedule';
 
 const useStyles = createStyleSheet(theme => ({
 	container: {
@@ -145,8 +146,8 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 		setShowAcceptDialog(false);
 	}, []);
 
-	const handleWeekChange = (day: WeekDay) => {
-		setWeekDays(v => [...v, day]);
+	const handleWeekChange = (days: WeekDay[]) => {
+		setWeekDays(days);
 	};
 
 	const handleShowPicker = () => {
@@ -171,7 +172,7 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 			setTime(date);
 		}
 	};
-
+	console.log(showTimePicker);
 	const handleDatePicked = (e: Event, date?: Date) => {
 		if (date) {
 			handleClosePicker();
@@ -193,7 +194,7 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 				lecturerId: user.uid,
 				groupId: group.uid,
 				lessonId: lesson.uid,
-				date: moment(date).unix(),
+				date: moment(date).unix() * 1000,
 				time: moment(time).format(DEFAULT_TIME_FORMAT),
 				singleTime,
 				weekDays: weekDays?.map(day => day.value),
@@ -202,10 +203,9 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 				isExam
 			};
 
-			new RTDatabase().schedule
-				.create(schedule)
-				.then(() => {
-					ToastAndroid.show('Schedule success saved', 3000);
+			createSchedule(schedule)
+				.then(data => {
+					ToastAndroid.show(data.message || 'Schedule success saved', 3000);
 					navigation.navigate('LecturerScheduleMain');
 				})
 				.finally(() => {
@@ -277,7 +277,7 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 								<Typography style={styles.time}>
 									At{' '}
 									<Typography style={styles.time} bold>
-										{moment(time).format('HH : MM')}
+										{moment(time).format('HH : mm')}
 									</Typography>{' '}
 									PM
 								</Typography>

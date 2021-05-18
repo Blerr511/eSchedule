@@ -12,22 +12,22 @@ export interface WeekDay {
 
 const DAYS: WeekDay[] = [
 	{
-		value: 0,
+		value: 1,
 		label: 'MO'
 	},
-	{value: 1, label: 'TU'},
-	{value: 2, label: 'WE'},
-	{value: 3, label: 'TH'},
-	{value: 4, label: 'FR'},
+	{value: 2, label: 'TU'},
+	{value: 3, label: 'WE'},
+	{value: 4, label: 'TH'},
+	{value: 5, label: 'FR'},
 	{
-		value: 5,
+		value: 6,
 		label: 'SA',
 		textStyle: {
 			fontWeight: 'bold'
 		}
 	},
 	{
-		value: 6,
+		value: 7,
 		label: 'SU',
 		textStyle: {
 			fontWeight: 'bold'
@@ -120,7 +120,7 @@ const Day = ({label, value, disabled, onSelect, selected, style, textStyle, size
 
 export interface WeekDaySelectProps {
 	containerStyle?: ViewStyle;
-	onChange?: (day: WeekDay) => void;
+	onChange?: (day: WeekDay[]) => void;
 	value?: WeekDay[];
 	size?: 'small' | 'default';
 }
@@ -132,16 +132,16 @@ const WeekDaySelect = ({containerStyle, onChange, value, size = 'default'}: Week
 
 	const handleSelect = useCallback(
 		(day: WeekDay) => {
-			onChange && onChange(day);
-			setDays(days => {
-				const i = days.findIndex(d => d.value === day.value);
-				const res = [...days];
-				if (i > -1) res.splice(i, 1);
-				else res.push(day);
-				return res;
-			});
+			const i = days.findIndex(d => d.value === day.value);
+			const newDays = [...days];
+			if (i > -1) newDays.splice(i, 1);
+			else newDays.push(day);
+
+			onChange && onChange(newDays);
+
+			setDays(newDays);
 		},
-		[onChange]
+		[days, onChange]
 	);
 
 	return (
