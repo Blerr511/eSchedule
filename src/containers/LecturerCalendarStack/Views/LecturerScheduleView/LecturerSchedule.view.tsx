@@ -1,7 +1,7 @@
 import React, {useCallback, useLayoutEffect} from 'react';
 import {RouteProp} from '@react-navigation/core';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {LCStackRoutes, LecturerCalendarStackParamList} from 'containers/LecturerCalendar/types';
+import {LCStackRoutes, LecturerCalendarStackParamList} from 'containers/LecturerCalendarStack/types';
 import {FlatList} from 'react-native';
 import {usePipedState} from 'hooks';
 import {RTDatabase} from 'helpers/firebase';

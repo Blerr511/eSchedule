@@ -7,11 +7,17 @@ import {ISchedule} from 'helpers/firebase/RTDatabase/controllers/ScheduleControl
 import {createStyleSheet, usePipedStateById} from 'hooks';
 import React from 'react';
 import {ListItem} from 'react-native-elements';
-import Progress from '../Progress';
+import Progress from 'components/Progress';
 
 const useStyles = createStyleSheet(theme => ({
 	timeButton: {
 		paddingVertical: theme.spacing(0.75)
+	},
+	title: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		width: '100%'
 	}
 }));
 
@@ -42,13 +48,7 @@ const ListItemComponent = ({lessonId, groupId, time, isExam}: ListItemComponentP
 		<ListItem>
 			<Button text={time} style={styles.timeButton} type="bordered" />
 			<ListItem.Content>
-				<ListItem.Title
-					style={{
-						display: 'flex',
-						flexDirection: 'row',
-						justifyContent: 'space-between',
-						width: '100%'
-					}}>
+				<ListItem.Title style={styles.title}>
 					<Typography>{lesson.title}</Typography>
 					<Spacer x={3} />
 					{isExam && <Chip>Exam</Chip>}

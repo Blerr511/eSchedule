@@ -5,7 +5,6 @@ import {ProgressBar} from 'react-native-paper';
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: 'red',
 		flex: 1,
 		width: '100%',
 		display: 'flex',
