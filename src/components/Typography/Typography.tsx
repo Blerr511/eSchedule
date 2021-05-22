@@ -31,7 +31,7 @@ const useStyles = createStyleSheet(theme => ({
 		textAlign: 'center'
 	},
 	secondaryText: {
-		opacity: 0.8
+		color: '#00000090'
 	}
 }));
 
