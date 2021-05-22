@@ -1408,6 +1408,13 @@
   resolved "https://registry.yarnpkg.com/@types/react-native-dotenv/-/react-native-dotenv-0.2.0.tgz#32c58422a422c1adf68acce363ed791314d5a8e7"
   integrity sha512-ZxX+dU/yoQc0jTk+/NWttkiuXceJyN5FpOSqDl0WynN5GDzxwH7OMruQ47qcY8llo2RD3irjvzJ9BwC8gDiq0A==
 
+"@types/react-native-elements@^0.18.0":
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/@types/react-native-elements/-/react-native-elements-0.18.0.tgz#81cf92d75a5d9ed73599761da37bd2b05b107a91"
+  integrity sha512-Tt0aq6HlN31Wexica9MwTwxnt46fLyx6yzMFJWPx2hqACrvBZfFTlwCoWMRa6ArR/kX3XJbAe6vKEBuZ08Zvtw==
+  dependencies:
+    react-native-elements "*"
+
 "@types/react-native-vector-icons@^6.4.6":
   version "6.4.6"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.6.tgz#848e3b14572def56212cafbf5cb1254b445bfb41"
@@ -1416,7 +1423,14 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
-"@types/react-native@*", "@types/react-native@^0.64.2":
+"@types/react-native@*":
+  version "0.64.5"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.64.5.tgz#219738b52b2e372ec057d3c8f20fbd6c37b245cd"
+  integrity sha512-k0r8MnQX7UFboZDvMKLov26gFLXKrNgLhCfSVhjaZ6wMUofKijxvee7/wgfAqtT2zS5FR4an4+qn0r72SCbw3g==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-native@^0.64.2":
   version "0.64.2"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.64.2.tgz#2e344aeec0b4eb21fb9eaa0ed8973245c5601d56"
   integrity sha512-w2y04h+GVLY+OMlFSmq4adPuS51XtEp1yUr83OvXf+moMQ4zDG1Q07HhyvYDXdc+BSS9ANHySBqVCz0hFxli9Q==
@@ -3356,9 +3370,9 @@ cssstyle@^2.3.0:
     cssom "~0.3.6"
 
 csstype@^3.0.2:
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.7.tgz#2a5fb75e1015e84dd15692f71e89a1450290950b"
-  integrity sha512-KxnUB0ZMlnUWCsx2Z8MUsr6qV6ja1w9ArPErJaJaF8a5SOWoHLIszeCTKGRGRgtLgYrs1E8CHkNSP1VZTTPc9g==
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.8.tgz#d2266a792729fb227cd216fb572f43728e1ad340"
+  integrity sha512-jXKhWqXPmlUeoQnF/EhTtTl4C9SnrxSH/jZUih3jmO6lBKr99rP3/+FmrMj4EFpOXzMtXHAZkd3x0E6h6Fgflw==
 
 dashdash@^1.12.0:
   version "1.14.1"
@@ -7009,10 +7023,10 @@ react-native-dotenv@^2.5.5:
   dependencies:
     dotenv "^8.0.0"
 
-react-native-elements@3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-3.2.0.tgz#0880801ad5be6d1da9848b57659b0f62b8ebb9f4"
-  integrity sha512-DgilI1P/S8xV3Uh6sjS7v1H7DsBXhlivG1IwHGJCO3OV3aFNh90bcdcmlKzxLZXWghQItqh9hQR3TLmgaZbU1w==
+react-native-elements@*, react-native-elements@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-3.4.1.tgz#74ea15a9369b05abf4f7421f0ce236ca01fedfe1"
+  integrity sha512-SPotW75psW1qyZgtiWuiKSTASdd4yNYvf6/vgO6nyl2kEgZG5nP5wtFxL/GsUVxwHh7yc8xnJ3J9pkApa7p9lQ==
   dependencies:
     "@types/react-native-vector-icons" "^6.4.6"
     color "^3.1.2"
@@ -7020,7 +7034,6 @@ react-native-elements@3.2.0:
     hoist-non-react-statics "^3.3.2"
     lodash.isequal "^4.5.0"
     opencollective-postinstall "^2.0.3"
-    prop-types "^15.7.2"
     react-native-ratings "^7.3.0"
     react-native-size-matters "^0.3.1"
 
