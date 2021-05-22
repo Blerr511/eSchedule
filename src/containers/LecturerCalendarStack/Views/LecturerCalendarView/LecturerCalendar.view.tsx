@@ -14,7 +14,7 @@ import {auth} from 'store/selectors';
 const useStyles = createStyleSheet({
 	container: {
 		flex: 1,
-		backgroundColor: 'red'
+		backgroundColor: 'white'
 	}
 });
 
