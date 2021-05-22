@@ -11,7 +11,7 @@ export interface ProfileHeaderProps {
 const facultyController = new RTDatabase().faculty;
 
 const FacultyItem = ({user}: ProfileHeaderProps) => {
-	const faculty = usePipedStateById(facultyController, user.settings?.facultyId);
+	const [faculty] = usePipedStateById(facultyController, user.settings?.facultyId);
 
 	return (
 		<ListItem bottomDivider>

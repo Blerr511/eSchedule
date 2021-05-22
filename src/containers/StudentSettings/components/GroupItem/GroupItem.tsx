@@ -11,7 +11,7 @@ export interface GroupItemProps {
 const groupController = new RTDatabase().group;
 
 const GroupItem = ({user}: GroupItemProps) => {
-	const group = usePipedStateById(groupController, user.settings?.groupId);
+	const [group] = usePipedStateById(groupController, user.settings?.groupId);
 
 	return (
 		<ListItem bottomDivider>

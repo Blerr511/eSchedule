@@ -107,8 +107,8 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 
 	const user = useSelector(auth.user);
 
-	const group = usePipedStateById(groupController, groupId);
-	const lesson = usePipedStateById(lessonController, lessonId);
+	const [group] = usePipedStateById(groupController, groupId);
+	const [lesson] = usePipedStateById(lessonController, lessonId);
 
 	const styles = useStyles();
 	const theme = useTheme();

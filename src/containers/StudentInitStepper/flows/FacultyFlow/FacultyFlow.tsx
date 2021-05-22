@@ -1,5 +1,4 @@
 import {StackNavigationProp} from '@react-navigation/stack';
-import Header from 'components/Header';
 import Loading from 'components/Loading';
 import {StepperFlow, StepperFlowParams} from 'containers/StudentInitStepper/types';
 import {RTDatabase} from 'helpers/firebase';

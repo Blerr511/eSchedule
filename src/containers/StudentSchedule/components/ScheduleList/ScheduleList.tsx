@@ -66,9 +66,9 @@ const RenderItem = ({schedule}: {schedule: ScheduleListItem}) => {
 	const weekDay = triggerDate.format('ddd');
 	const date = triggerDate.date();
 
-	const lesson = usePipedStateById(lessonController, schedule.lessonId);
+	const [lesson] = usePipedStateById(lessonController, schedule.lessonId);
 
-	const lecturer = usePipedStateById(userController, schedule.lecturerId);
+	const [lecturer] = usePipedStateById(userController, schedule.lecturerId);
 
 	const handleOpenLink = () =>
 		Linking.openURL(String(schedule?.link)).catch(err => {

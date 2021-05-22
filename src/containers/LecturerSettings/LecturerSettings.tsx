@@ -1,7 +1,6 @@
 import React from 'react';
 import {usePipedStateById} from 'hooks';
 import {useSelector} from 'react-redux';
-import {IUser} from 'store/slices/auth';
 import {auth} from 'store/selectors/auth';
 import {Card} from 'react-native-elements';
 import {RTDatabase} from 'helpers/firebase';
@@ -17,7 +16,7 @@ const userController = new RTDatabase().users;
 const LecturerSettings = () => {
 	const storeUser = useSelector(auth.user);
 
-	const user = usePipedStateById(userController, storeUser?.uid) as IUser<'lecturer'>;
+	const [user] = usePipedStateById(userController, storeUser?.uid);
 
 	return (
 		<KeyboardAvoidingView style={{flex: 1}}>

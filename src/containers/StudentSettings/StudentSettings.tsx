@@ -19,7 +19,7 @@ const userController = new RTDatabase().users;
 const StudentSettings = () => {
 	const storeUser = useSelector(auth.user);
 
-	const user = usePipedStateById(userController, storeUser?.uid) as IUser<'student'>;
+	const [user] = usePipedStateById<IUser<'student'>>(userController, storeUser?.uid);
 
 	return (
 		<KeyboardAvoidingView style={{flex: 1}}>

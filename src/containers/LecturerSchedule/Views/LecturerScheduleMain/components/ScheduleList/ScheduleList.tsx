@@ -67,9 +67,9 @@ const RenderItem = ({schedule}: {schedule: ScheduleListItem}) => {
 	const weekDay = triggerDate.format('ddd');
 	const date = triggerDate.date();
 
-	const group = usePipedStateById(groupController, schedule.groupId);
-	const lesson = usePipedStateById(lessonController, schedule.lessonId);
-	const faculty = usePipedStateById(facultyController, group?.facultyId);
+	const [group] = usePipedStateById(groupController, schedule.groupId);
+	const [lesson] = usePipedStateById(lessonController, schedule.lessonId);
+	const [faculty] = usePipedStateById(facultyController, group?.facultyId);
 
 	return (
 		<ListItem>
