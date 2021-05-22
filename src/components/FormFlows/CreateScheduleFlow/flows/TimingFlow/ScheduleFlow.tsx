@@ -19,7 +19,6 @@ import {DBItemPayload} from 'helpers/firebase/RTDatabase/BaseController.abstract
 import {useSelector} from 'react-redux';
 import {auth} from 'store/selectors';
 import {DEFAULT_TIME_FORMAT} from 'constants/dateFormats';
-import {createSchedule} from 'services/schedule';
 
 const useStyles = createStyleSheet(theme => ({
 	container: {
@@ -203,9 +202,10 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 				isExam
 			};
 
-			createSchedule(schedule)
-				.then(data => {
-					ToastAndroid.show(data.message || 'Schedule success saved', 3000);
+			new RTDatabase().schedule
+				.create(schedule)
+				.then(() => {
+					ToastAndroid.show('Schedule success saved', 3000);
 					navigation.navigate('LecturerScheduleMain');
 				})
 				.finally(() => {
