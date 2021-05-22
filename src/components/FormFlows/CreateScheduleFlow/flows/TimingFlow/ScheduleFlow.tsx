@@ -214,15 +214,16 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 				color
 			};
 
-			controller
-				.create(schedule)
-				.then(() => {
-					ToastAndroid.show('Schedule success saved', 3000);
-					navigation.navigate('LecturerScheduleMain');
-				})
-				.finally(() => {
-					setShowAcceptDialog(false);
-				});
+			try {
+				await controller.create(schedule);
+				ToastAndroid.show('Schedule success saved', 3000);
+				navigation.navigate('LecturerScheduleMain');
+			} catch (error) {
+				if (__DEV__) console.error(error);
+				ToastAndroid.show('Failed to create schedule', 3000);
+			} finally {
+				setShowAcceptDialog(false);
+			}
 		}
 	};
 
