@@ -19,6 +19,7 @@ import {DBItemPayload} from 'helpers/firebase/RTDatabase/BaseController.abstract
 import {useSelector} from 'react-redux';
 import {auth} from 'store/selectors';
 import {DEFAULT_TIME_FORMAT} from 'constants/dateFormats';
+import randomColor from 'randomcolor';
 
 const useStyles = createStyleSheet(theme => ({
 	container: {
@@ -171,7 +172,7 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 			setTime(date);
 		}
 	};
-	console.log(showTimePicker);
+
 	const handleDatePicked = (e: Event, date?: Date) => {
 		if (date) {
 			handleClosePicker();
@@ -187,8 +188,18 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 		setIsExam(isExam => !isExam);
 	}, []);
 
-	const handleSaveSchedule = () => {
+	const handleSaveSchedule = async () => {
 		if (group && lesson && user) {
+			const controller = new RTDatabase().schedule;
+
+			let color = randomColor();
+
+			const schedules = await controller.find();
+
+			while (schedules.find(v => v.color === color)) {
+				color = randomColor();
+			}
+
 			const schedule: DBItemPayload<ISchedule> = {
 				lecturerId: user.uid,
 				groupId: group.uid,
@@ -199,10 +210,11 @@ const TimingFlow = ({route, navigation}: TimingFlowProps) => {
 				weekDays: weekDays?.map(day => day.value),
 				link,
 				description,
-				isExam
+				isExam,
+				color
 			};
 
-			new RTDatabase().schedule
+			controller
 				.create(schedule)
 				.then(() => {
 					ToastAndroid.show('Schedule success saved', 3000);
