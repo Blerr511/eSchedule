@@ -28,7 +28,6 @@ const scheduleController = new RTDatabase().schedule;
 const StudentCalendarView = ({navigation}: StudentCalendarViewProps) => {
 	const styles = useStyles();
 	const user = useSelector(auth.user);
-	console.log(user?.settings);
 
 	const [scheduleList] = usePipedState(
 		scheduleController,
