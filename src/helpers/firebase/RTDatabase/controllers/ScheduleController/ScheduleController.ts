@@ -1,3 +1,4 @@
+import {ColorValue} from 'react-native';
 import {IUser} from 'store/slices/auth';
 import {BaseController, DBItem} from '../../BaseController.abstract';
 import {IGroup} from '../GroupController.ts';
@@ -14,6 +15,7 @@ export interface ISchedule<S extends boolean = boolean> extends DBItem {
 	link?: string;
 	description?: string;
 	isExam?: boolean;
+	color: ColorValue;
 }
 
 export class ScheduleController extends BaseController<ISchedule> {
