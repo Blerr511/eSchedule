@@ -1,4 +1,7 @@
+import {RouteProp} from '@react-navigation/core';
+import {StackNavigationProp} from '@react-navigation/stack';
 import Header from 'components/Header';
+import {LCStackRoutes, LecturerCalendarStackParamList} from 'containers/LecturerCalendar/types';
 import {RTDatabase} from 'helpers/firebase';
 import {getMarkedDates} from 'helpers/util';
 import {createStyleSheet, usePipedState} from 'hooks';
@@ -11,7 +14,8 @@ import {auth} from 'store/selectors';
 
 const useStyles = createStyleSheet({
 	container: {
-		flex: 1
+		flex: 1,
+		backgroundColor: 'white'
 	}
 });
 
@@ -31,7 +35,12 @@ const getCurrentDate = (): DateObject => {
 	};
 };
 
-const LecturerCalendarView = () => {
+export interface LecturerCalendarViewProps {
+	route: RouteProp<LecturerCalendarStackParamList, LCStackRoutes.Calendar>;
+	navigation: StackNavigationProp<LecturerCalendarStackParamList, LCStackRoutes.Calendar>;
+}
+
+const LecturerCalendarView = ({navigation, route}: LecturerCalendarViewProps) => {
 	const styles = useStyles();
 	const user = useSelector(auth.user);
 
@@ -46,10 +55,23 @@ const LecturerCalendarView = () => {
 		scheduleList
 	]);
 
+	const handleDayPress = useCallback(
+		(day: DateObject) => {
+			navigation.push(LCStackRoutes.Schedule, {dateString: day.dateString});
+		},
+		[navigation]
+	);
+
 	return (
 		<KeyboardAvoidingView style={styles.container}>
 			<Header>Lecturer Calendar</Header>
-			<Calendar markingType="multi-dot" markedDates={markedDates} onMonthChange={setMonth} />
+			<Calendar
+				markingType="multi-dot"
+				markedDates={markedDates}
+				onMonthChange={setMonth}
+				onDayPress={handleDayPress}
+				onDayLongPress={handleDayPress}
+			/>
 		</KeyboardAvoidingView>
 	);
 };

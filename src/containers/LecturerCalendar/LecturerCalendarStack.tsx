@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {LCStackRoutes, LecturerCalendarStackParams} from './types';
-import {LecturerCalendarView} from './Views';
+import {LecturerCalendarView, LecturerScheduleView} from './Views';
 
 const stack = createStackNavigator<LecturerCalendarStackParams>();
 
@@ -12,6 +12,11 @@ const LecturerCalendarStack = () => {
 				name={LCStackRoutes.Calendar}
 				component={LecturerCalendarView}
 				options={{headerShown: false}}
+			/>
+			<stack.Screen
+				name={LCStackRoutes.Schedule}
+				component={LecturerScheduleView}
+				options={{headerTitle: 'Schedule'}}
 			/>
 		</stack.Navigator>
 	);

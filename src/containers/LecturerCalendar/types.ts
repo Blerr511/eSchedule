@@ -1,5 +1,4 @@
 import {ParamListBase} from '@react-navigation/routers';
-import {ISchedule} from 'helpers/firebase/RTDatabase/controllers/ScheduleController';
 
 export enum LCStackRoutes {
 	Calendar = 'lecturer/calendar',
@@ -8,7 +7,7 @@ export enum LCStackRoutes {
 
 export type LecturerCalendarStackParams = {
 	[LCStackRoutes.Calendar]: undefined;
-	[LCStackRoutes.Schedule]: {scheduleId: ISchedule['uid']};
+	[LCStackRoutes.Schedule]: {dateString: string};
 };
 
 export interface LecturerCalendarStackParamList extends ParamListBase, LecturerCalendarStackParams {}
