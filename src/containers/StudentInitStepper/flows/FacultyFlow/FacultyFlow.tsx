@@ -15,7 +15,7 @@ export interface FacultyFlowProps {
 const facultyController = new RTDatabase().faculty;
 
 const FacultyFlow = ({navigation}: FacultyFlowProps) => {
-	const faculty = usePipedState(facultyController);
+	const [faculty] = usePipedState(facultyController);
 
 	const handleSelectFactory = (uid: string) => () => {
 		navigation.push(StepperFlow.GROUP, {facultyId: uid});

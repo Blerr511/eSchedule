@@ -81,6 +81,16 @@ export abstract class BaseController<T extends DBItem = DBItem> extends Controll
 		await $ref.remove();
 	}
 
+	public async updateById(uid: DBItem['uid'], data: Partial<DBItemPayload<T>>): Promise<void> {
+		const $ref = this.getRef(uid);
+		await $ref.update(data);
+	}
+
+	public async updateByRef(ref: string, data: Partial<DBItemPayload<T>>): Promise<void> {
+		const $ref = this.getRef(...ref.split('/'));
+		await $ref.update(data);
+	}
+
 	public ref(...rest: string[]) {
 		return this.getRef(...rest);
 	}

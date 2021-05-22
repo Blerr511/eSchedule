@@ -3,7 +3,7 @@ import app from '@react-native-firebase/app';
 export const FIREBASE_APP = 'CONSOLE' as const;
 
 export const initFirebase = async ({databaseURL}: {databaseURL: string}) => {
-	if (!app.apps.find(v => v.name === FIREBASE_APP))
+	try {
 		await app.initializeApp(
 			{
 				...app.app().options,
@@ -11,5 +11,7 @@ export const initFirebase = async ({databaseURL}: {databaseURL: string}) => {
 			},
 			{name: FIREBASE_APP}
 		);
-	else console.warn('initFirebase already called.');
+	} catch (error) {
+		if (__DEV__) console.warn(error);
+	}
 };
