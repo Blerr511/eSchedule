@@ -23,7 +23,7 @@ const LecturerSettings = () => {
 			<ScrollView>
 				<Card>
 					<Card.Title>
-						<Typography h4>Lecturer Profile Settings</Typography>
+						<Typography h4>Profile Settings</Typography>
 					</Card.Title>
 					<Card.Divider />
 					{!user ? (
