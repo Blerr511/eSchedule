@@ -64,7 +64,7 @@ const LecturerCalendarView = ({navigation, route}: LecturerCalendarViewProps) =>
 
 	return (
 		<KeyboardAvoidingView style={styles.container}>
-			<Header>Lecturer Calendar</Header>
+			<Header>Calendar</Header>
 			<Calendar
 				markingType="multi-dot"
 				markedDates={markedDates}
