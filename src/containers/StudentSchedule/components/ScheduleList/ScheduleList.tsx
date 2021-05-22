@@ -6,7 +6,7 @@ import React from 'react';
 import {FlatList, Linking, Pressable, ToastAndroid, View} from 'react-native';
 import {ListItem} from 'react-native-elements';
 import Header from 'components/Header';
-import {ScheduleListItem} from 'containers/StudentSchedule/StudentSchedule';
+import {ScheduleListItem} from 'helpers/util';
 
 export interface ScheduleList {
 	schedules: ScheduleListItem[];

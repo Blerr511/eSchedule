@@ -5,8 +5,8 @@ import moment from 'moment';
 import React from 'react';
 import {FlatList, Linking, Pressable, ToastAndroid, View} from 'react-native';
 import {ListItem} from 'react-native-elements';
-import {ScheduleListItem} from '../../LecturerScheduleMain';
 import Header from 'components/Header';
+import {ScheduleListItem} from 'helpers/util';
 
 export interface ScheduleList {
 	schedules: ScheduleListItem[];
