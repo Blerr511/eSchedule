@@ -1,1 +1,1 @@
-export {default} from './LecturerCalendar';
+export {default} from './LecturerCalendarStack';
